@@ -5,8 +5,6 @@ var app = angular.module('headerModule', [
 
 app.controller('AppHeaderController', function ($scope) {
   var vm_ = this;
-  vm_.leftTest = 'Left Test Text';
-  vm_.rightTest = 'Right Test Text';
   activate_();
 
   /**

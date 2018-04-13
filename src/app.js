@@ -35,7 +35,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $mdThemingProvider) {
   //#endregion
 
   //#region Theming
-  $mdThemingProvider.definePalette('int-blue', {
+  $mdThemingProvider.definePalette('dm-blue', {
     '50': '#ffffff',
     '100': '#d4ebfd',
     '200': '#9fd1fa',
@@ -53,25 +53,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $mdThemingProvider) {
     'contrastDefaultColor': 'light',
     'contrastDarkColors': '50 100 200 300 400 A100 A200 A400'
   });
-  // This version of the blue palette exists because md-nav doesnt correctly support theming.
-  $mdThemingProvider.definePalette('int-alt-blue', {
-    '50': '#2196f3',
-    '100': '#2196f3',
-    '200': '#2196f3',
-    '300': '#2196f3',
-    '400': '#2196f3',
-    '500': '#2196f3',
-    '600': '#2196f3',
-    '700': '#2196f3',
-    '800': '#2196f3',
-    '900': '#2196f3',
-    'A100': '#2196f3',
-    'A200': '#2196f3',
-    'A400': '#2196f3',
-    'A700': '#2196f3',
-    'contrastDefaultColor': 'light'
-  });
-  $mdThemingProvider.definePalette('int-orange', {
+  $mdThemingProvider.definePalette('dm-orange', {
     '50': '#ffffff',
     '100': '#ffe0b9',
     '200': '#ffc781',
@@ -89,7 +71,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $mdThemingProvider) {
     'contrastDefaultColor': 'light',
     'contrastDarkColors': '50 100 200 300 400 500 600 A100 A200 A400'
   });
-  $mdThemingProvider.definePalette('int-red', {
+  $mdThemingProvider.definePalette('dm-red', {
     '50': '#ffffff',
     '100': '#ffffff',
     '200': '#fbcece',
@@ -112,10 +94,5 @@ app.config(function ($stateProvider, $urlRouterProvider, $mdThemingProvider) {
       .primaryPalette('int-blue')
       .accentPalette('int-orange')
       .warnPalette('int-red');
-
-  // This theme exists because md-nav doesnt correctly support theming.
-  $mdThemingProvider.theme('altTheme1')
-      .primaryPalette('int-alt-blue')
-      .accentPalette('int-alt-blue');
   //#endregion
 });

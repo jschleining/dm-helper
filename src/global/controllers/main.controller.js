@@ -1,4 +1,4 @@
-app = angular.module('proceduralApp');
+app = angular.module('dmHelperApp');
 
 app.controller('MainController', function ($scope, $rootScope, $state) {
   var vm_ = this;

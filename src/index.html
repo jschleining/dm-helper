@@ -9,7 +9,7 @@
 
   <head>
     <meta charset="utf-8">
-    <title>Procedural Test</title>
+    <title>DM Helper</title>
     <meta name="description" content="">
 
     <!-- Remote Dependencies -->
@@ -22,15 +22,11 @@
     <link href="styles/global.styles.less" type="text/less" rel="stylesheet">
     <link href="header/header.styles.less" type="text/less" rel="stylesheet">
     <link href="dashboard/dashboard.styles.less" type="text/less" rel="stylesheet">
-    <link href="global/components/dungeon-generator/dungeon-generator.styles.less" type="text/less" rel="stylesheet">
-
-    <!--<base href="C:/Users/jschleining/Desktop/CodeTest/app-rewrite/src/">-->
-    <base href="/src/">
+    <base href="/">
   </head>
 
-  <body ng-app="proceduralApp" ng-controller="MainController as main">
+  <body ng-app="dmHelperApp" ng-controller="MainController as main">
     <div id="outer-wrap" layout="column" flex="100">
-      <!--<ui-view></ui-view>-->
       <div ui-view="header" id="header"></div>
       <div ui-view="workspace" id="workspace"></div>
     </div>
@@ -51,7 +47,5 @@
     <script src="global/controllers/main.controller.js"></script>
     <script src="header/header.controller.js"></script>
     <script src="dashboard/dashboard.controller.js"></script>
-    <script src="global/components/dungeon-generator/dungeon-generator.component.js"></script>
-    <script src="global/components/dungeon-generator/dungeon-generator.controller.js"></script>
   </body>
 </html>

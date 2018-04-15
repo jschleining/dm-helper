@@ -4,4 +4,25 @@
     <h4 class="no-margin-vertical layout-margin-horizontal layout-padding-horizontal">Dashboard</h4>
   </section>
 
+  <section class="page-head layout-padding-vertical layout-padding-horizontal" layout="row" layout-align="start center">
+    <md-input-container class="layout-margin-horizontal layout-padding-horizontal no-margin-vertical">
+      <label>Quantity</label>
+      <input ng-model="vm.numberOfDice" type="number" min="1">
+    </md-input-container>
+
+    <div class="layout-margin-horizontal layout-padding-horizontal">
+      <md-select class=" no-margin-vertical" ng-model="vm.diceType" placeholder="Die">
+        <md-option ng-repeat="die in vm.dice" ng-value="die.size" ng-selected="die.selected">d{{die.size}}</md-option>
+      </md-select>
+    </div>
+
+    <div class="layout-margin-horizontal layout-padding-horizontal">
+      <md-button class="md-raised md-primary no-margin no-padding" ng-click="vm.rollDice()">Roll!</md-button>
+    </div>
+
+    <span class="bold layout-margin-left layout-padding-left">
+      Result: {{vm.total}}
+    </span>
+  </section>
+
 </md-whiteframe>

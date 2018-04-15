@@ -22,7 +22,12 @@
     <link href="styles/global.styles.less" type="text/less" rel="stylesheet">
     <link href="header/header.styles.less" type="text/less" rel="stylesheet">
     <link href="dashboard/dashboard.styles.less" type="text/less" rel="stylesheet">
-    <base href="/src/">
+    <link href="dungeons/dungeons.styles.less" type="text/less" rel="stylesheet">
+    <link href="cities/cities.styles.less" type="text/less" rel="stylesheet">
+    <link href="global/components/city-builder/city-builder.styles.less" type="text/less" rel="stylesheet">
+    <link href="global/components/dungeon-generator/dungeon-generator.styles.less" type="text/less" rel="stylesheet">
+
+    <base href="/src">
   </head>
 
   <body ng-app="dmHelperApp" ng-controller="MainController as main">
@@ -47,5 +52,11 @@
     <script src="global/controllers/main.controller.js"></script>
     <script src="header/header.controller.js"></script>
     <script src="dashboard/dashboard.controller.js"></script>
+    <script src="dungeons/dungeons.controller.js"></script>
+    <script src="cities/cities.controller.js"></script>
+    <script src="global/components/city-builder/city-builder.component.js"></script>
+    <script src="global/components/city-builder/city-builder.controller.js"></script>
+    <script src="global/components/dungeon-generator/dungeon-generator.component.js"></script>
+    <script src="global/components/dungeon-generator/dungeon-generator.controller.js"></script>
   </body>
 </html>

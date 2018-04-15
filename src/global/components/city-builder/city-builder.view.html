@@ -1,0 +1,38 @@
+<div id="city-builder" layout="column">
+  <div layout="row" layout-align="start center">
+    <md-select class="layout-margin-horizontal layout-padding-horizontal no-margin-vertical" ng-model="vm.selectedSize"
+        placeholder="settlement" ng-change="vm.updateSettlement()">
+      <md-option ng-repeat="size in vm.settlementSizes" ng-value="size.size">{{size.size}}</md-option>
+    </md-select>
+
+    <md-select class="layout-margin-horizontal layout-padding-horizontal no-margin-vertical" ng-model="vm.selectedMix"
+               placeholder="Mix" ng-change="vm.updateSettlement()">
+      <md-option ng-repeat="mix in vm.racialMixes" ng-value="mix.type">{{mix.type}}</md-option>
+    </md-select>
+
+    <div class="layout-margin-horizontal layout-padding-horizontal">
+      <md-button class="md-raised md-primary" ng-click="vm.updateComponent()">Refresh</md-button>
+    </div>
+  </div>
+
+  <div class="layout-margin-top layout-padding-top" layout="row" layout-align="start center">
+    <div class="layout-margin-horizontal layout-padding-horizontal">Type: {{vm.settlement.size}}</div>
+    <div class="layout-margin-horizontal layout-padding-horizontal">Population: {{vm.settlement.population}}</div>
+    <div class="layout-margin-horizontal layout-padding-horizontal">GP Limit: {{vm.settlement.gpLimit}}</div>
+    <div class="layout-margin-horizontal layout-padding-horizontal">Ready Cash: {{vm.settlement.readyCash}}</div>
+  </div>
+
+  <div class="layout-margin-top layout-padding-top" layout="row" layout-align="start center">
+    <div class="layout-margin-horizontal layout-padding-horizontal">Guards/Soldiers: {{vm.settlement.military}}</div>
+    <div class="layout-margin-horizontal layout-padding-horizontal">Militia: {{vm.settlement.militia}}</div>
+  </div>
+
+  <div class="layout-margin-top layout-padding-top" layout="column">
+    <div class="layout-margin-horizontal layout-padding-horizontal">Racial Demographics:</div>
+    <ul>
+      <li ng-repeat="race in vm.settlement.racialDemographics">
+        <div>{{race.name}}: {{race.population}}</div>
+      </li>
+    </ul>
+  </div>
+</div>

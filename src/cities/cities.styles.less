@@ -1,0 +1,14 @@
+@import "../styles/helper.styles.less";
+@import "../styles/mixins.styles.less";
+
+#cities {
+  @switch: light;
+  @font: @font-primary-light;
+
+  .page-head {
+
+    h4 {
+      .md-primary-text(@switch; @font);
+    }
+  }
+}

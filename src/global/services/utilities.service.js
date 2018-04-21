@@ -1,17 +1,30 @@
 var app = angular.module('dmHelperApp');
 
 app.service('Utilities', function () {
-  var vm_ = this;
-  vm_.getRandom = getRandom_;
-  vm_.getObjectIndex = getObjectIndex_;
-  vm_.detectBoundaryCollision = detectBoundaryCollision_;
+  var service_ = this;
+  service_.getRandom = getRandom_;
+  service_.getObjectIndex = getObjectIndex_;
+  service_.generateValueRanges = generateValueRanges_;
+  service_.getItemFromWeightedObjectArray = getItemFromWeightedObjectArray_;
+  service_.detectBoundaryCollision = detectBoundaryCollision_;
 
-  // Return an inclusive random number between two integers.
-  function getRandom_(min, max)
-  {
+  /**
+   * Return an inclusive random number between two integers.
+   *
+   * @param {Number} min The minimum value to be returned.
+   * @param {Number} max The maximum value to be returned.
+   */
+  function getRandom_(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
+  /**
+   * Return the index of an item with a given value in an object array.
+   *
+   * @param {Array} array The object array to search through.
+   * @param {String} property The property on the object to search for.
+   * @param {*} value The value of the property being searched for.
+   */
   function getObjectIndex_(array, property, value) {
     for (var index = 0; index < array.length; index++) {
       if (array[index][property] === value) {
@@ -19,6 +32,67 @@ app.service('Utilities', function () {
       }
     }
     return -1;
+  }
+
+  /**
+   * Loop through an array of objects with a weight property and generate a range from weights.
+   * This is used for randomly picking a weighted item from an object array.
+   */
+  function generateValueRanges_(objectArray) {
+    for (var object = 0; object < objectArray.length; object++) {
+      if (object === 0) {
+        objectArray[object].weightedRange = {
+          min: 1,
+          max: objectArray[object].weight
+        };
+      } else {
+        objectArray[object].weightedRange = {
+          min: objectArray[object - 1].weightedRange.max  + 1,
+          max: objectArray[object - 1].weightedRange.max + objectArray[object].weight
+        };
+      }
+    }
+    return objectArray;
+  }
+
+  /**
+   * Return an item from a weighted object array.
+   *
+   * @param {Array} array The object array to search through.
+   * @param {Number} modifier A number to modify the random number generator by.
+   * @param {Number} preSelection Optional number to pass in, bypassing the random number generator.
+   */
+  function getItemFromWeightedObjectArray_(array, modifier, preSelection) {
+    modifier = modifier || 0;
+    var min = array[0].weightedRange.min + modifier;
+    var max = array[array.length - 1].weightedRange.max + modifier;
+    var selection;
+    var returnItem = {};
+    if (preSelection) {
+      selection = preSelection;
+    } else {
+      selection = service_.getRandom(min, max);
+    }
+    for (var item = 0; item < array.length; item++) {
+      var found = false;
+
+      if (
+          item === 0 && selection <= array[item].weightedRange.max ||
+          item === array.length - 1 && selection >= array[item].weightedRange.min ||
+          (
+              (item > 0 && item < array.length - 1) &&
+              (selection >= array[item].weightedRange.min && selection <= array[item].weightedRange.max)
+          )
+      ) {
+        found = true;
+      }
+
+      if (found) {
+        returnItem = array[item];
+        break;
+      }
+    }
+    return returnItem;
   }
 
   // Basic Boundary Box Collision Detection
@@ -40,7 +114,7 @@ app.service('Utilities', function () {
     var drawGrid = function(ctx, w, h, tileSize) {
       // fill in the background with black
       ctx.fillStyle = '#000';
-      // ctx.fillRect(0, 0, vm_.localSettings.width * vm_.localSettings.tileSize, vm_.localSettings.width * vm_.localSettings.tileSize);
+      // ctx.fillRect(0, 0, service_.localSettings.width * service_.localSettings.tileSize, service_.localSettings.width * service_.localSettings.tileSize);
       ctx.fillRect(0, 0, w, h);
 
       ctx.beginPath();
@@ -68,6 +142,6 @@ app.service('Utilities', function () {
       ctx.stroke();
     };
 
-    drawGrid(vm_.ctx, vm_.canvas.width, vm_.canvas.height, vm_.localSettings.tileSize);
+    drawGrid(service_.ctx, service_.canvas.width, service_.canvas.height, service_.localSettings.tileSize);
   }
 });

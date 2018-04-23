@@ -47,11 +47,13 @@ app.controller('DemographicsGeneratorController', ['$scope', '$mdSidenav', 'Util
    * Add a new race to the list of races.
    */
   function addCustomRace_() {
+    vm_.customRace.ageCategories = angular.copy(vm_.ageSelection);
     vm_.raceSelection.push(vm_.customRace);
     vm_.customRace = {
       name: '',
       isAllowed: false,
-      percentageOfChildren: 10
+      percentageOfChildren: 10,
+      ageCategories: angular.copy(vm_.ageSelection)
     };
     vm_.updateSelectedRaces();
   }
@@ -62,9 +64,12 @@ app.controller('DemographicsGeneratorController', ['$scope', '$mdSidenav', 'Util
   function updateSelectedRaces_() {
     for (var race = 0; race < vm_.raceSelection.length; race++) {
       if (vm_.raceSelection[race].isAllowed) {
-        vm_.selectedRaces.push(vm_.raceSelection[race]);
+        if (Utilities.getObjectIndex(vm_.selectedRaces, 'name', vm_.raceSelection[race].name) === -1) {
+          vm_.selectedRaces.push(vm_.raceSelection[race]);
+        }
       }
     }
+    console.log(vm_.selectedRaces);
   }
   //#endregion
 

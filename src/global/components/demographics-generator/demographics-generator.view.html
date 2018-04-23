@@ -81,6 +81,32 @@
 
       <section class="layout-padding-well border-bottom-1" layout="column" layout-align="start stretch"
                md-colors="{'border-color': 'background-300'}">
+        <h4>Edit Age Defaults:</h4>
+        <div class="layout-margin-vertical layout-padding-vertical hint border-bottom-1 bold" md-colors="{'border-color': 'background-300'}">
+          Changes made here are global and will override any previously made changes to age settings.
+        </div>
+        <ul class="no-margin no-padding">
+          <li ng-repeat="age in vm.ageSelection track by $index" class=""
+              layout="row" layout-align="space-between center">
+            <span>{{age.name}}</span>
+            <span layout="row" layout-align="end center">
+              <span class="layout-padding-horizontal layout-margin-right">{{age.weight}}</span>
+              <md-button class="md-icon-button no-margin" md-no-ripple aria-label="Remove"
+                         ng-disabled="age.weight === 0" ng-click="vm.updateAge(vm.ageSelection, $index, -1)">
+                <i class="material-icons">remove</i>
+              </md-button>
+              <md-button class="md-icon-button no-margin" md-no-ripple aria-label="Add"
+                         ng-disabled="age.weight === 100" ng-click="vm.updateAge(vm.ageSelection, $index, 1)">
+                <i class="material-icons">add</i>
+              </md-button>
+              </span>
+          </li>
+        </ul>
+        <md-button class="md-raised md-primary no-margin" ng-click="vm.updateAges()">Update Age Defaults</md-button>
+      </section>
+
+      <section class="layout-padding-well border-bottom-1" layout="column" layout-align="start stretch"
+               md-colors="{'border-color': 'background-300'}">
         <h4>Age By Race:</h4>
         <div class="layout-margin-vertical layout-padding-vertical hint border-bottom-1" md-colors="{'border-color': 'background-300'}">
           Age distribution is done by weight. If the 'Adult' category has 50 in it, for example, there will be
@@ -97,11 +123,11 @@
               <span layout="row" layout-align="end center">
                 <span class="layout-padding-horizontal layout-margin-right">{{age.weight}}</span>
                 <md-button class="md-icon-button no-margin" md-no-ripple aria-label="Remove"
-                    ng-disabled="age.weight === 0" ng-click="vm.updateAge(race, $index, -1)">
+                    ng-disabled="age.weight === 0" ng-click="vm.updateAge(race.ageCategories, $index, -1)">
                   <i class="material-icons">remove</i>
                 </md-button>
                 <md-button class="md-icon-button no-margin" md-no-ripple aria-label="Add"
-                    ng-disabled="age.weight === 100" ng-click="vm.updateAge(race, $index, 1)">
+                    ng-disabled="age.weight === 100" ng-click="vm.updateAge(race.ageCategories, $index, 1)">
                   <i class="material-icons">add</i>
                 </md-button>
               </span>

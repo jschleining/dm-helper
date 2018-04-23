@@ -82,21 +82,21 @@ app.controller('DemographicsGeneratorController', ['$scope', '$mdSidenav', 'Util
     }
   }
 
-  function updateAge_(race, index, modifier) {
-    var nextIndex = (index === race.ageCategories.length - 1) ? 0 : index + 1;
+  function updateAge_(ageCategories, index, modifier) {
+    var nextIndex = (index === ageCategories.length - 1) ? 0 : index + 1;
 
-    if (race.ageCategories[index].weight + modifier >= 0 && race.ageCategories[index].weight + modifier <= 100) {
-      race.ageCategories[index].weight += modifier;
+    if (ageCategories[index].weight + modifier >= 0 && ageCategories[index].weight + modifier <= 100) {
+      ageCategories[index].weight += modifier;
     }
-    while (race.ageCategories[nextIndex].weight - modifier < 0 || race.ageCategories[nextIndex].weight - modifier > 100) {
-      if (nextIndex === race.ageCategories.length - 1) {
+    while (ageCategories[nextIndex].weight - modifier < 0 || ageCategories[nextIndex].weight - modifier > 100) {
+      if (nextIndex === ageCategories.length - 1) {
         nextIndex = 0;
       } else {
         nextIndex++;
       }
     }
     if (nextIndex !== index) {
-      race.ageCategories[nextIndex].weight -= modifier;
+      ageCategories[nextIndex].weight -= modifier;
     }
   }
 

@@ -43,11 +43,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="demographics-generator.view.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="demographics-generator.view.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/global/components/demographics-generator/demographics-generator.view.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
-              <caret line="93" column="52" lean-forward="false" selection-start-line="93" selection-start-column="52" selection-end-line="93" selection-end-column="52" />
+            <state relative-caret-position="81">
+              <caret line="84" column="92" lean-forward="false" selection-start-line="84" selection-start-column="92" selection-end-line="84" selection-end-column="92" />
               <folding>
                 <element signature="n#script#0;n#!!top" expanded="false" />
               </folding>
@@ -55,16 +55,16 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="demographics-generator.controller.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="demographics-generator.controller.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/global/components/demographics-generator/demographics-generator.controller.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="441">
-              <caret line="49" column="66" lean-forward="false" selection-start-line="49" selection-start-column="66" selection-end-line="49" selection-end-column="66" />
+            <state relative-caret-position="168">
+              <caret line="81" column="5" lean-forward="true" selection-start-line="81" selection-start-column="5" selection-end-line="81" selection-end-column="5" />
               <folding>
                 <element signature="e#1155#1206#0" expanded="false" />
                 <element signature="e#1540#1590#0" expanded="false" />
-                <element signature="e#2868#2909#0" expanded="false" />
-                <element signature="e#2954#3148#0" expanded="false" />
+                <element signature="e#2837#2878#0" expanded="false" />
+                <element signature="e#2923#3117#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -209,9 +209,9 @@
         <option value="$PROJECT_DIR$/src/styles/helper.styles.less" />
         <option value="$PROJECT_DIR$/src/global/services/demographics.service.js" />
         <option value="$PROJECT_DIR$/src/styles/global.styles.less" />
-        <option value="$PROJECT_DIR$/src/global/components/demographics-generator/demographics-generator.view.html" />
         <option value="$PROJECT_DIR$/src/demographics/demographics.view.html" />
         <option value="$PROJECT_DIR$/src/global/components/demographics-generator/demographics-generator.controller.js" />
+        <option value="$PROJECT_DIR$/src/global/components/demographics-generator/demographics-generator.view.html" />
       </list>
     </option>
   </component>
@@ -357,18 +357,18 @@
       <workItem from="1524182438203" duration="124000" />
       <workItem from="1524182575883" duration="1428000" />
       <workItem from="1524204050680" duration="73249000" />
-      <workItem from="1524495807176" duration="1600000" />
+      <workItem from="1524495807176" duration="3545000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="116249000" />
+    <option name="totallyTimeSpent" value="118194000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1805" y="193" width="1562" height="788" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1992238" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1992238" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1043,6 +1043,43 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="252">
           <caret line="18" column="1" lean-forward="false" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
+          <folding>
+            <element signature="e#138#244#0" expanded="false" />
+            <element signature="e#408#444#0" expanded="false" />
+            <element signature="e#446#469#0" expanded="false" />
+            <element signature="e#564#600#0" expanded="false" />
+            <element signature="e#694#728#0" expanded="false" />
+            <element signature="e#823#858#0" expanded="false" />
+            <element signature="e#951#984#0" expanded="false" />
+            <element signature="e#1084#1150#0" expanded="false" />
+            <element signature="e#1248#1314#0" expanded="false" />
+            <element signature="e#1349#1376#0" expanded="false" />
+            <element signature="e#1421#1455#0" expanded="false" />
+            <element signature="e#1496#1528#0" expanded="false" />
+            <element signature="e#1571#1604#0" expanded="false" />
+            <element signature="e#1643#1674#0" expanded="false" />
+            <element signature="e#1721#1783#0" expanded="false" />
+            <element signature="e#1832#1894#0" expanded="false" />
+            <element signature="e#1909#1933#0" expanded="false" />
+            <element signature="e#2030#2067#0" expanded="false" />
+            <element signature="e#2163#2198#0" expanded="false" />
+            <element signature="e#2295#2331#0" expanded="false" />
+            <element signature="e#2426#2460#0" expanded="false" />
+            <element signature="e#2562#2630#0" expanded="false" />
+            <element signature="e#2730#2798#0" expanded="false" />
+            <element signature="e#2941#2969#0" expanded="false" />
+            <element signature="e#3015#3050#0" expanded="false" />
+            <element signature="e#3092#3125#0" expanded="false" />
+            <element signature="e#3169#3203#0" expanded="false" />
+            <element signature="e#3243#3275#0" expanded="false" />
+            <element signature="e#3330#3394#0" expanded="false" />
+            <element signature="e#3445#3509#0" expanded="false" />
+            <element signature="e#3524#3556#0" expanded="false" />
+            <element signature="e#3574#3605#0" expanded="false" />
+            <element signature="e#3622#3651#0" expanded="false" />
+            <element signature="e#3669#3699#0" expanded="false" />
+            <element signature="e#3715#3743#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1206,16 +1243,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/global/components/demographics-generator/demographics-generator.view.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="93" column="52" lean-forward="false" selection-start-line="93" selection-start-column="52" selection-end-line="93" selection-end-column="52" />
-          <folding>
-            <element signature="n#script#0;n#!!top" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/global/services/utilities.service.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
@@ -1238,13 +1265,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/global/components/demographics-generator/demographics-generator.controller.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="49" column="66" lean-forward="false" selection-start-line="49" selection-start-column="66" selection-end-line="49" selection-end-column="66" />
+        <state relative-caret-position="168">
+          <caret line="81" column="5" lean-forward="true" selection-start-line="81" selection-start-column="5" selection-end-line="81" selection-end-column="5" />
           <folding>
             <element signature="e#1155#1206#0" expanded="false" />
             <element signature="e#1540#1590#0" expanded="false" />
-            <element signature="e#2868#2909#0" expanded="false" />
-            <element signature="e#2954#3148#0" expanded="false" />
+            <element signature="e#2837#2878#0" expanded="false" />
+            <element signature="e#2923#3117#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/global/components/demographics-generator/demographics-generator.view.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="81">
+          <caret line="84" column="92" lean-forward="false" selection-start-line="84" selection-start-column="92" selection-end-line="84" selection-end-column="92" />
+          <folding>
+            <element signature="n#script#0;n#!!top" expanded="false" />
           </folding>
         </state>
       </provider>

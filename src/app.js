@@ -6,7 +6,8 @@ var app = angular.module('dmHelperApp', [
   'headerModule',
   'dashboardModule',
   'dungeonsModule',
-  'citiesModule'
+  'citiesModule',
+  'demographicsModule'
 ]);
 
 app.config(function ($stateProvider, $urlRouterProvider, $mdThemingProvider) {
@@ -44,16 +45,26 @@ app.config(function ($stateProvider, $urlRouterProvider, $mdThemingProvider) {
             }
           }
         }).
-          state('root.cities', {
-            url: '/cities',
-            views: {
-              'workspace@': {
-                templateUrl: 'cities/cities.view.html',
-                controller: 'CitiesController',
-                controllerAs: 'vm'
-              }
+        state('root.cities', {
+          url: '/cities',
+          views: {
+            'workspace@': {
+              templateUrl: 'cities/cities.view.html',
+              controller: 'CitiesController',
+              controllerAs: 'vm'
             }
-          });
+          }
+        }).
+        state('root.demographics', {
+          url: '/demographics',
+          views: {
+            'workspace@': {
+              templateUrl: 'demographics/demographics.view.html',
+              controller: 'DemographicsController',
+              controllerAs: 'vm'
+            }
+          }
+        });
   //#endregion
 
   //#region Theming

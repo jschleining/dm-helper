@@ -17,7 +17,14 @@ app.controller('CityBuilderController', ['Utilities', function (Utilities) {
       },
       gpLimit: 40,
       powerCenterQuantity: 1,
-      powerCenterModifier: -5
+      powerCenterModifier: -5,
+      classes: {
+        classLevelModifier: -3,
+        highLevelNPCQuantity: 1,
+        chanceToAddLevelsToClass: 5,
+        classesToCheckForAddedLevels: ['Druid', 'Ranger'],
+        levelsToAdd: 10
+      }
     },
     {
       weight: 20,
@@ -28,7 +35,14 @@ app.controller('CityBuilderController', ['Utilities', function (Utilities) {
       },
       gpLimit: 100,
       powerCenterQuantity: 1,
-      powerCenterModifier: 0
+      powerCenterModifier: 0,
+      classes: {
+        classLevelModifier: -2,
+        highLevelNPCQuantity: 1,
+        chanceToAddLevelsToClass: 5,
+        classesToCheckForAddedLevels: ['Druid', 'Ranger'],
+        levelsToAdd: 10
+      }
     },
     {
       weight: 20,
@@ -39,7 +53,14 @@ app.controller('CityBuilderController', ['Utilities', function (Utilities) {
       },
       gpLimit: 200,
       powerCenterQuantity: 1,
-      powerCenterModifier: 5
+      powerCenterModifier: 5,
+      classes: {
+        classLevelModifier: -1,
+        highLevelNPCQuantity: 1,
+        chanceToAddLevelsToClass: 0,
+        classesToCheckForAddedLevels: [],
+        levelsToAdd: 0
+      }
     },
     {
       weight: 20,
@@ -50,7 +71,14 @@ app.controller('CityBuilderController', ['Utilities', function (Utilities) {
       },
       gpLimit: 800,
       powerCenterQuantity: 1,
-      powerCenterModifier: 10
+      powerCenterModifier: 10,
+      classes: {
+        classLevelModifier: 0,
+        highLevelNPCQuantity: 1,
+        chanceToAddLevelsToClass: 0,
+        classesToCheckForAddedLevels: [],
+        levelsToAdd: 0
+      }
     },
     {
       weight: 15,
@@ -61,7 +89,14 @@ app.controller('CityBuilderController', ['Utilities', function (Utilities) {
       },
       gpLimit: 3000,
       powerCenterQuantity: 1,
-      powerCenterModifier: 15
+      powerCenterModifier: 15,
+      classes: {
+        classLevelModifier: 3,
+        highLevelNPCQuantity: 1,
+        chanceToAddLevelsToClass: 0,
+        classesToCheckForAddedLevels: [],
+        levelsToAdd: 0
+      }
     },
     {
       weight: 10,
@@ -72,7 +107,14 @@ app.controller('CityBuilderController', ['Utilities', function (Utilities) {
       },
       gpLimit: 15000,
       powerCenterQuantity: 2,
-      powerCenterModifier: 20
+      powerCenterModifier: 20,
+      classes: {
+        classLevelModifier: 6,
+        highLevelNPCQuantity: 2,
+        chanceToAddLevelsToClass: 0,
+        classesToCheckForAddedLevels: [],
+        levelsToAdd: 0
+      }
     },
     {
       weight: 4,
@@ -83,7 +125,14 @@ app.controller('CityBuilderController', ['Utilities', function (Utilities) {
       },
       gpLimit: 40000,
       powerCenterQuantity: 3,
-      powerCenterModifier: 25
+      powerCenterModifier: 25,
+      classes: {
+        classLevelModifier: 9,
+        highLevelNPCQuantity: 3,
+        chanceToAddLevelsToClass: 0,
+        classesToCheckForAddedLevels: [],
+        levelsToAdd: 0
+      }
     },
     {
       weight: 1,
@@ -94,9 +143,17 @@ app.controller('CityBuilderController', ['Utilities', function (Utilities) {
       },
       gpLimit: 100000,
       powerCenterQuantity: 4,
-      powerCenterModifier: 30
+      powerCenterModifier: 30,
+      classes: {
+        classLevelModifier: 12,
+        highLevelNPCQuantity: 4,
+        chanceToAddLevelsToClass: 0,
+        classesToCheckForAddedLevels: [],
+        levelsToAdd: 0
+      }
     }
   ];
+
   vm_.powerCenterSelection = [
     {
       weight: 65,
@@ -504,6 +561,127 @@ app.controller('CityBuilderController', ['Utilities', function (Utilities) {
       officeHolder: 'Highest Level Fighter'
     }
   ];
+  vm_.rarityDice = [
+    {
+      rarity: 'Very Rare',
+      die: 3
+    },
+    {
+      rarity: 'Rare',
+      die: 4
+    },
+    {
+      rarity: 'Uncommon',
+      die: 6
+    },
+    {
+      rarity: 'Common',
+      die: 8
+    }
+  ];
+  vm_.classSelection = [
+    {
+      class: 'Barbarian',
+      rarityDie: 'Rare',
+      rolls: 1,
+      isPlayable: true
+    },
+    {
+      class: 'Bard',
+      rarityDie: 'Uncommon',
+      rolls: 1,
+      isPlayable: true
+    },
+    {
+      class: 'Cleric',
+      rarityDie: 'Uncommon',
+      rolls: 1,
+      isPlayable: true
+    },
+    {
+      class: 'Druid',
+      rarityDie: 'Uncommon',
+      rolls: 1,
+      isPlayable: true
+    },
+    {
+      class: 'Fighter',
+      rarityDie: 'Common',
+      rolls: 1,
+      isPlayable: true
+    },
+    {
+      class: 'Monk',
+      rarityDie: 'Rare',
+      rolls: 1,
+      isPlayable: true
+    },
+    {
+      class: 'Paladin',
+      rarityDie: 'Very Rare',
+      rolls: 1,
+      isPlayable: true
+    },
+    {
+      class: 'Ranger',
+      rarityDie: 'Very Rare',
+      rolls: 1,
+      isPlayable: true
+    },
+    {
+      class: 'Rogue',
+      rarityDie: 'Common',
+      rolls: 1,
+      isPlayable: true
+    },
+    {
+      class: 'Sorcerer',
+      rarityDie: 'Rare',
+      rolls: 1,
+      isPlayable: true
+    },
+    {
+      class: 'Wizard',
+      rarityDie: 'Rare',
+      rolls: 1,
+      isPlayable: true
+    },
+    {
+      class: 'Adept',
+      rarityDie: 'Uncommon',
+      rolls: 1,
+      isPlayable: false,
+      npcPercent: .5
+    },
+    {
+      class: 'Aristocrat',
+      rarityDie: 'Rare',
+      rolls: 1,
+      isPlayable: false,
+      npcPercent: .5
+    },
+    {
+      class: 'Commoner',
+      rarityDie: 'Rare',
+      rolls: 4,
+      isPlayable: false,
+      npcPercent: 91
+    },
+    {
+      class: 'Expert',
+      rarityDie: 'Rare',
+      rolls: 3,
+      isPlayable: false,
+      npcPercent: 3
+    },
+    {
+      class: 'Warrior',
+      rarityDie: 'Rare',
+      rolls: 2,
+      isPlayable: false,
+      npcPercent: 5
+    }
+  ];
 
   //TODO: Add Index to mix and account for other, or at least force other to be last
   vm_.racialMixSelection = [
@@ -788,6 +966,7 @@ app.controller('CityBuilderController', ['Utilities', function (Utilities) {
   vm_.getRacialMix = getRacialMix_;
   vm_.getAgeDemographics = getAgeDemographics_;
   vm_.updateWeightedRangeValues = updateWeightedRangeValues_;
+  vm_.getClassDemographics = getClassDemographics_;
   //#endregion
 
   /**
@@ -842,6 +1021,7 @@ app.controller('CityBuilderController', ['Utilities', function (Utilities) {
     vm_.settlement.militia = vm_.getMilitia(vm_.settlement.population);
     vm_.settlement.racialDemographics = vm_.getRacialMix(vm_.selectedMix, vm_.settlement.population);
     vm_.settlement.racialDemographics = vm_.getAgeDemographics(vm_.settlement.racialDemographics);
+    vm_.settlement.classDemographics = vm_.getClassDemographics(vm_.settlement.population);
     console.log(vm_.settlement);
   }
 
@@ -972,5 +1152,121 @@ app.controller('CityBuilderController', ['Utilities', function (Utilities) {
     return ageDemographics;
   }
 
+  function getClassDemographics_(population) {
+    var remaining = population;
+    var classes = [];
 
+    // loop through each playable class
+    for (var currentClass = 0; currentClass < vm_.classSelection.length; currentClass++) {
+      // set current class
+      var current = vm_.classSelection[currentClass];
+      // set the die type to roll
+      var die = _.find(vm_.rarityDice, function (obj) {
+        return obj.rarity === current.rarityDie;
+      });
+      // set up the base definition object for current class
+      var currentClassObject = {
+        class: current.class,
+        totalCount: 0,
+        levels: []
+      };
+      // determine how many high level characters there are of current class based on pc/npc status
+      var quantity = (current.isPlayable) ? 1 : vm_.settlement.classes.highLevelNPCQuantity;
+      // loop through a number of times equal to how many high level characters exist in this class
+      for (var currentHighLevel = 0; currentHighLevel < quantity; currentHighLevel++) {
+        var currentHighestLevel = 0;
+        for (var dieNum = 0; dieNum < current.rolls; dieNum++) {
+          currentHighestLevel += Utilities.getRandom(1, die.die);
+        }
+        currentHighestLevel += vm_.settlement.classes.classLevelModifier;
+        // var currentHighestLevel = Utilities.getRandom(1, die.die) + vm_.settlement.classes.classLevelModifier;
+
+        // if a class might get extra levels based on the settlement
+        if (vm_.settlement.classes.chanceToAddLevelsToClass > 0) {
+          // if current class exists in the array of classes that might have levels added
+          if (vm_.settlement.classes.classesToCheckForAddedLevels.indexOf(current.class) > -1) {
+            var rand = Utilities.getRandom(1, 100);
+            // if the chance to add succeeds
+            if (rand <= vm_.settlement.classes.chanceToAddLevelsToClass) {
+              currentHighestLevel += vm_.settlement.classes.levelsToAdd;
+            }
+          }
+        }
+
+        var currentLevel = currentHighestLevel;
+        var currentQuantity = 1;
+        if (currentLevel > 0) {
+          var currentLevelIndex = Utilities.getObjectIndex(currentClassObject.levels, 'level', currentLevel);
+          if (currentLevelIndex > -1) {
+            currentClassObject.levels[currentLevelIndex].quantity += currentQuantity;
+          } else {
+            currentClassObject.levels.push(
+              {
+                level: currentLevel,
+                quantity: currentQuantity
+              }
+            );
+          }
+          remaining -= currentQuantity;
+          while (Math.floor(currentLevel / 2) >= 1) {
+            currentLevel = Math.floor(currentLevel / 2);
+            currentQuantity *= 2;
+            if (!current.isPlayable && currentLevel === 1) {
+              break;
+            } else {
+              remaining -= currentQuantity;
+              currentLevelIndex = Utilities.getObjectIndex(currentClassObject.levels, 'level', currentLevel);
+              if (currentLevelIndex > -1) {
+                currentClassObject.levels[currentLevelIndex].quantity += currentQuantity;
+              } else {
+                currentClassObject.levels.push(
+                    {
+                      level: currentLevel,
+                      quantity: currentQuantity
+                    }
+                );
+              }
+            }
+          }
+        }
+      }
+
+      currentClassObject.levels = _.sortBy(currentClassObject.levels, 'level');
+      for (var count = 0; count < currentClassObject.levels.length; count++) {
+        currentClassObject.totalCount += currentClassObject.levels[count].quantity;
+      }
+      classes.push(currentClassObject);
+    }
+
+    var npcClasses = [];
+    var remainingNPCCount = remaining;
+    for (var currentNPCClass = 0; currentNPCClass < vm_.classSelection.length; currentNPCClass++) {
+      if (!vm_.classSelection[currentNPCClass].isPlayable) {
+        npcClasses.push(vm_.classSelection[currentNPCClass]);
+      }
+    }
+    npcClasses = _.sortBy(npcClasses, 'npcPercent').reverse();
+    for (var classToUpdate = 0; classToUpdate < npcClasses.length; classToUpdate++) {
+      var classIndex = Utilities.getObjectIndex(classes, 'class', npcClasses[classToUpdate].class);
+      var numberToSet = Math.floor(remaining * (npcClasses[classToUpdate].npcPercent / 100));
+      if (numberToSet > 0) {
+        remainingNPCCount -= numberToSet;
+        classes[classIndex].levels.push(
+          {
+            level: 1,
+            quantity: numberToSet
+          }
+        );
+        classes[classIndex].levels = _.sortBy(classes[classIndex].levels, 'level');
+      }
+    }
+    if (remainingNPCCount > 0) {
+      var finalUpdate = Utilities.getObjectIndex(classes, 'class', npcClasses[0].class);
+      var levelIndex = Utilities.getObjectIndex(classes[finalUpdate].levels, 'level', 1);
+      classes[finalUpdate].levels[levelIndex].quantity += remaining;
+    }
+
+    console.log('classes', classes);
+    return classes;
+  }
 }]);

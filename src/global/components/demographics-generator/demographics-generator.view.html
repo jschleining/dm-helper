@@ -5,13 +5,35 @@
   </md-sidenav>
 
   <section id="main" class="layout-padding-well" flex="75">
-    <div>
-      Allowed Races:
-      <ul>
-        <li ng-repeat="race in vm.selectedRaces | orderBy : 'name'">
-          <span>{{race.name}}</span>
-        </li>
-      </ul>
+    <div layout="column" layout-align="start stretch">
+      <md-whiteframe class="md-whiteframe-1dp layout-padding-well">
+        <div  class="layout-padding-well" ng-repeat="race in vm.selectedRaces | orderBy: 'name'">
+          ({{race.id}}) Race: {{race.name}}
+
+          <div layout="row" layout-align="start center">
+            <md-chips ng-model="race.tags" readonly="true" md-removable="false">
+              <md-chip-template>
+                <span class="hint">{{$chip.name}}</span>
+              </md-chip-template>
+            </md-chips>
+          </div>
+          <ul ng-if="race.subraces.length > 0">
+            <li ng-repeat="subrace in race.subraces" layout="column" layout-align="start stretch">
+              <div>
+                ({{subrace.owner}} / {{subrace.id}}) {{subrace.name}}: Allowed: {{subrace.isAllowed}}, Weight: {{subrace.weight.custom}}
+              </div>
+
+              <div layout="row" layout-align="start center">
+                <md-chips ng-model="subrace.tags" readonly="true" md-removable="false">
+                  <md-chip-template>
+                    <span class="hint">{{$chip.name}}</span>
+                  </md-chip-template>
+                </md-chips>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </md-whiteframe>
     </div>
 
   </section>
@@ -21,121 +43,8 @@
       Opening any setting will reset the generator.
     </div>
     <div layout="row" layout-align="space-around center">
-      <md-button class="md-raised md-primary no-margin" ng-click="vm.toggleSettingsSidebar('race-settings.html')">edit races</md-button>
-      <md-button class="md-raised md-primary no-margin" ng-click="vm.toggleSettingsSidebar('age-settings.html')">edit age</md-button>
+      <md-button class="md-raised md-primary no-margin" ng-click="vm.toggleSettingsSidebar('raceSettings')">edit races</md-button>
+      <md-button class="md-raised md-primary no-margin" ng-click="vm.toggleSettingsSidebar('ageSettings')">edit age</md-button>
     </div>
   </section>
 </div>
-
-<!-- Race Settings Template -->
-<script type="text/ng-template" id="race-settings.html">
-  <md-content>
-    <div layout="column">
-      <section class="page-head layout-padding-well border-bottom-1" layout="row" layout-align="space-between center"
-          md-colors="{'border-color': 'background-300'}">
-        <h3>Race Settings</h3>
-      </section>
-      <section class="layout-padding-well border-bottom-1" layout="column" layout-align="start stretch"
-          md-colors="{'border-color': 'background-300'}">
-        <h4>Allowed Races:</h4>
-        <md-input-container class="no-padding">
-          <!-- TODO: Account for none selected. That should fire an error. -->
-          <md-select ng-model="vm.selectedRaces" md-selected-text="'Selected: ' + vm.selectedRaces.length + ' (Minimum 1)'"
-              ng-model-options="{trackBy: '$value.name'}" multiple>
-            <md-option ng-value="race" ng-repeat="race in vm.raceSelection"
-                ng-disabled="vm.selectedRaces.length === 1 && race.name === vm.selectedRaces[0].name">
-              <span>{{race.name}}</span>
-            </md-option>
-          </md-select>
-        </md-input-container>
-      </section>
-      <section class="layout-padding-well" layout="column" layout-align="start stretch">
-        <h4>Add New Race:</h4>
-        <md-input-container class="no-margin-bottom no-padding">
-          <input ng-model="vm.customRace.name" placeholder="Enter Race Name..." type="text">
-        </md-input-container>
-        <md-checkbox ng-model="vm.customRace.isAllowed" aria-label="Is Allowed">
-          Add to Currently Selected?
-        </md-checkbox>
-        <div flex="10" layout layout-align="start center">
-          <span class="md-body-1">Percent of children of this race</span>
-        </div>
-        <div layout>
-          <md-slider class="no-margin" flex md-discrete ng-model="vm.customRace.percentageOfChildren"
-              step="5" min="5" max="40" aria-label="rating"></md-slider>
-        </div>
-        <md-button class="md-raised md-primary no-margin" ng-click="vm.addCustomRace()"
-                   ng-disabled="vm.customRace.name === ''">submit new race</md-button>
-      </section>
-    </div>
-  </md-content>
-</script>
-
-<script type="text/ng-template" id="age-settings.html">
-  <md-content>
-    <div layout="column">
-      <section class="page-head layout-padding-well border-bottom-1" layout="row" layout-align="space-between center"
-               md-colors="{'border-color': 'background-300'}">
-        <h3>Age Settings</h3>
-      </section>
-
-      <section class="layout-padding-well border-bottom-1" layout="column" layout-align="start stretch"
-               md-colors="{'border-color': 'background-300'}">
-        <h4>Edit Age Defaults:</h4>
-        <div class="layout-margin-vertical layout-padding-vertical hint border-bottom-1 bold" md-colors="{'border-color': 'background-300'}">
-          Changes made here are global and will override any previously made changes to age settings.
-        </div>
-        <ul class="no-margin no-padding">
-          <li ng-repeat="age in vm.ageSelection track by $index" class=""
-              layout="row" layout-align="space-between center">
-            <span>{{age.name}}</span>
-            <span layout="row" layout-align="end center">
-              <span class="layout-padding-horizontal layout-margin-right">{{age.weight}}</span>
-              <md-button class="md-icon-button no-margin" md-no-ripple aria-label="Remove"
-                         ng-disabled="age.weight === 0" ng-click="vm.updateAge(vm.ageSelection, $index, -1)">
-                <i class="material-icons">remove</i>
-              </md-button>
-              <md-button class="md-icon-button no-margin" md-no-ripple aria-label="Add"
-                         ng-disabled="age.weight === 100" ng-click="vm.updateAge(vm.ageSelection, $index, 1)">
-                <i class="material-icons">add</i>
-              </md-button>
-              </span>
-          </li>
-        </ul>
-        <md-button class="md-raised md-primary no-margin" ng-click="vm.updateAges()">Update Age Defaults</md-button>
-      </section>
-
-      <section class="layout-padding-well border-bottom-1" layout="column" layout-align="start stretch"
-               md-colors="{'border-color': 'background-300'}">
-        <h4>Age By Race:</h4>
-        <div class="layout-margin-vertical layout-padding-vertical hint border-bottom-1" md-colors="{'border-color': 'background-300'}">
-          Age distribution is done by weight. If the 'Adult' category has 50 in it, for example, there will be
-          a 50% chance for any given member of that race to be in the 'Adult' age category. Weight will
-          always add up to 100. <br><br>
-          Changes are automatically applied.
-        </div>
-        <div ng-repeat="race in vm.selectedRaces | orderBy : 'name' track by $index" layout="column">
-          <span>{{race.name}}</span>
-          <ul class="no-margin">
-            <li ng-repeat="age in race.ageCategories track by $index" class="layout-padding-left"
-                layout="row" layout-align="space-between center">
-              <span>{{age.name}}</span>
-              <span layout="row" layout-align="end center">
-                <span class="layout-padding-horizontal layout-margin-right">{{age.weight}}</span>
-                <md-button class="md-icon-button no-margin" md-no-ripple aria-label="Remove"
-                    ng-disabled="age.weight === 0" ng-click="vm.updateAge(race.ageCategories, $index, -1)">
-                  <i class="material-icons">remove</i>
-                </md-button>
-                <md-button class="md-icon-button no-margin" md-no-ripple aria-label="Add"
-                    ng-disabled="age.weight === 100" ng-click="vm.updateAge(race.ageCategories, $index, 1)">
-                  <i class="material-icons">add</i>
-                </md-button>
-              </span>
-            </li>
-          </ul>
-        </div>
-
-      </section>
-    </div>
-  </md-content>
-</script>

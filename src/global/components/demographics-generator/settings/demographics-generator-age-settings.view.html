@@ -1,0 +1,135 @@
+<md-content>
+  <div layout="column">
+
+    <!-- Header -->
+    <section class="layout-padding-well border-bottom-1" layout="column"
+             md-colors="{'border-color': 'background-300'}">
+      <h3>Age Settings</h3>
+
+
+      <div class="hint layout-margin-vertical">
+        Age distribution is done by weight. If the 'Adult' category has 50 in it, for example, there will be
+        a 50% chance for any given member of that race to be in the 'Adult' age category.
+      </div>
+
+      <!-- Set Age Category Edit Mode -->
+      <md-switch ng-model="vm.ageSettingsMode" aria-label="Age Settings Mode" ng-change="vm.updateAgeConfigs(vm.ageSettingsMode)"
+                 ng-true-value="'Global'" ng-false-value="'Individual'" class="md-primary no-margin-top">
+        Editing: <span class="bold" md-colors="{'color': 'primary-500'}">{{vm.ageSettingsMode}} Settings</span>
+      </md-switch>
+
+      <!-- Global Settings -->
+      <section ng-if="vm.ageSettingsMode === 'Global'" layout="column" layout-align="start stretch">
+        <h4>Edit Global Age Defaults:</h4>
+        <div class="hint bold layout-margin-vertical">
+          Changes made here are global and will override any previously made changes to age settings across
+          all races and subraces.<br>
+          This cannot be undone.
+        </div>
+        <ul class="no-margin-top no-padding">
+          <li ng-repeat="age in vm.ageSelection track by $index" layout="row" layout-align="space-between center">
+            <span>{{age.name}}</span>
+            <span layout="row" layout-align="end center">
+              <span class="layout-padding-horizontal layout-margin-right">{{age.weight.default}}</span>
+
+              <md-button class="md-icon-button icon-button-override no-margin-horizontal no-padding inherit-width" ng-disabled="age.weight.default === 0"
+                  ng-click="vm.updateObjectWeight(vm.ageSelection, age, -1, 'default')" md-no-ink aria-label="Subtract">
+                <i class="material-icons">remove</i>
+              </md-button>
+              <md-button class="md-icon-button icon-button-override no-margin-horizontal no-padding inherit-width" ng-disabled="age.weight.default === 0"
+                  ng-click="vm.updateObjectWeight(vm.ageSelection, age, 1, 'default')" md-no-ink aria-label="Add">
+                <i class="material-icons">add</i>
+              </md-button>
+
+            </span>
+          </li>
+        </ul>
+        <md-button class="md-raised md-primary no-margin" ng-click="vm.updateAges()">Update Age Defaults</md-button>
+      </section>
+
+      <!-- Select Races to Edit -->
+      <section layout="column" layout="start stretch" ng-if="vm.ageSettingsMode === 'Individual'">
+        <h4>Select a Race:</h4>
+        <div class="hint layout-margin-vertical">
+          Only races that are allowed in the settlement will appear in this list.
+        </div>
+        <md-input-container class="no-padding">
+          <md-select ng-model="vm.tempObject" ng-model-options="{trackBy: '$value.id'}" aria-label="Race Editing"
+                     placeholder="Select a Race:" ng-change="vm.setEditObject(vm.tempObject)">
+            <md-option ng-value="race" ng-repeat="race in vm.selectedRaces">
+              <span>{{race.name}}</span>
+            </md-option>
+          </md-select>
+        </md-input-container>
+      </section>
+    </section>
+
+    <!-- Original below here -->
+
+
+    <section class="layout-padding-well border-bottom-1" layout="column" layout-align="start stretch"
+             md-colors="{'border-color': 'background-300'}">
+      <h4>Age By Race:</h4>
+      <div class="layout-margin-vertical layout-padding-vertical hint border-bottom-1" md-colors="{'border-color': 'background-300'}">
+        Age distribution is done by weight. If the 'Adult' category has 50 in it, for example, there will be
+        a 50% chance for any given member of that race to be in the 'Adult' age category.<br><br>
+        Changes are automatically applied.
+      </div>
+      <div ng-repeat="race in vm.selectedRaces | orderBy : 'name' track by $index" layout="column">
+        <span>{{race.name}}</span>
+        <ul class="no-margin">
+          <li ng-repeat="age in race.ageCategories track by $index" class="layout-padding-left"
+              layout="row" layout-align="space-between center">
+            <span>{{age.name}}</span>
+            <span layout="row" layout-align="end center">
+                <span class="layout-padding-horizontal layout-margin-right">{{age.weight}}</span>
+                <md-button class="md-icon-button no-margin" md-no-ripple aria-label="Remove"
+                           ng-disabled="age.weight === 0" ng-click="vm.updateAge(race.ageCategories, $index, -1)">
+                  <i class="material-icons">remove</i>
+                </md-button>
+                <md-button class="md-icon-button no-margin" md-no-ripple aria-label="Add"
+                           ng-disabled="age.weight === 100" ng-click="vm.updateAge(race.ageCategories, $index, 1)">
+                  <i class="material-icons">add</i>
+                </md-button>
+              </span>
+          </li>
+        </ul>
+      </div>
+
+    </section>
+  </div>
+</md-content>
+
+
+
+
+
+
+
+
+
+<div class="layout-margin-top" ng-if="vm.raceEditing.subraces.length > 0">
+  <ul class="no-margin-top layout-padding-left layout-margin-left layout-margin-bottom">
+    <li class="no-padding layout-margin-bottom" ng-repeat="subrace in vm.raceEditing.subraces track by $index"
+        layout="column" layout-align="start stretch">
+      <md-input-container class="no-margin no-padding no-input-spacer">
+        <input ng-model="subrace.name" minlength="1" type="text" ng-disabled="subrace.id.indexOf('cust') === -1">
+      </md-input-container>
+
+      <!--<div layout="row" layout-align="space-between center">-->
+      <!--<span class="layout-margin-right">Children%: {{subrace.percentOfTotalChildrenForRace}}</span>-->
+
+      <!--<span layout="column" layout-align="center center">-->
+      <!--<md-tooltip md-direction="left">Percent of children of this subrace compared to the total children of this race</md-tooltip>-->
+      <!--<i class="material-icons">help</i>-->
+      <!--</span>-->
+      <!--</div>-->
+
+    </li>
+  </ul>
+</div>
+
+
+
+
+

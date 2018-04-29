@@ -7,6 +7,35 @@ app.service('Utilities', function () {
   service_.generateValueRanges = generateValueRanges_;
   service_.getItemFromWeightedObjectArray = getItemFromWeightedObjectArray_;
   service_.detectBoundaryCollision = detectBoundaryCollision_;
+  service_.findMatches = findMatches_;
+
+  /**
+   * Return an array of items with a given value in an object array.
+   *
+   * @param {Array} array The object array to search through.
+   * @param {String} property The property on the object to search for.
+   * @param {*} value The value of the property being searched for.
+   * @param {String} matchType Type of match. Can be either 'exact' or 'contains'.
+   */
+  function findMatches_(objectArray, property, value, matchType) {
+    var objects = [];
+    for (var object = 0; object < objectArray.length; object++) {
+      switch(matchType) {
+        case 'contains':
+          if (objectArray[object][property].indexOf(value) > -1) {
+            objects.push(objectArray[object]);
+          }
+          break;
+        case 'exact':
+        default:
+          if (objectArray[object][property] === value) {
+            objects.push(objectArray[object]);
+          }
+          break;
+      }
+    }
+    return objects;
+  }
 
   /**
    * Return an inclusive random number between two integers.
@@ -24,11 +53,18 @@ app.service('Utilities', function () {
    * @param {Array} array The object array to search through.
    * @param {String} property The property on the object to search for.
    * @param {*} value The value of the property being searched for.
+   * @param {String} matchType Type of match. Can be either 'exact' or 'contains'.
    */
-  function getObjectIndex_(array, property, value) {
+  function getObjectIndex_(array, property, value, matchType) {
     for (var index = 0; index < array.length; index++) {
-      if (array[index][property] === value) {
-        return index;
+      if (matchType === 'contains') {
+        if (array[index][property].indexOf(value) > -1) {
+          return index;
+        }
+      } else {
+        if (array[index][property] === value) {
+          return index;
+        }
       }
     }
     return -1;

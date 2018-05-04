@@ -1,0 +1,79 @@
+<md-content>
+  <div layout="column">
+
+    <!-- Header -->
+    <section class="layout-padding-well border-bottom-1" layout="column" layout-align="start stretch"
+             md-colors="{'border-color': 'background-300'}">
+      <h3>Authority Figure Settings</h3>
+      <div class="hint layout-margin-top">
+        <ul class="no-margin no-padding">
+          <li layout="row" layout-align="start start">
+            <i class="material-icons">chevron_right</i>
+            <span class="hint">Add, edit, or remove a potential authority figure from the settlement.</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Authority Figure Settings -->
+    <section class="layout-padding-well border-bottom-1" layout="column" layout-align="start stretch"
+        md-colors="{'border-color': 'background-300'}">
+      <div class="layout-margin-bottom layout-padding-bottom hint border-bottom-1" layout="column"
+           md-colors="{'border-color': 'background-300'}">
+        <div class="hint">
+          The settlement's primary authority figure will be selected randomly from this list.
+        </div>
+        <div class="hint layout-margin-top">
+          This list uses weighted values. This means that when generating a random item, there is a higher chance for
+          certain items to appear, based on weight. The higher the weight, the higher the chance that the given item
+          is chosen.
+        </div>
+      </div>
+
+      <!-- Edit Authority Figures -->
+      <ul class="layout-padding-left layout-margin-left">
+        <li class="no-padding layout-margin-bottom" ng-repeat="authority in vm.editArray track by $index"
+            layout="column" layout-align="start stretch">
+          <!-- TODO: Need to update to account for 'edit object' really being an array -->
+          <dg-object-edit object="authority" group="vm.authoritySelection" parent="null"
+              edit-types="['group-allowed', 'delete', 'weight', 'weight-custom']"
+              on-delete="vm.deleteCustomObject(authority, null, false)"
+              on-add-weight="vm.updateObjectWeight(vm.editArray, authority, 1, 'custom', false)"
+              on-remove-weight="vm.updateObjectWeight(vm.editArray, authority, -1, 'custom', false)"
+              on-change-allowed="vm.resetObjectWeight(vm.editArray, authority)"></dg-object-edit>
+        </li>
+        <li class="no-padding">
+          <div layout="column" layout-align="start stretch">
+            <md-button class="md-raised md-primary no-margin" ng-click="vm.updateCustomArray('authority', vm.editArray, false)"
+                       ng-disabled="vm.checkForButtonDisabled(vm.editArray, 'name', '', {'matchType': 'exact'})">
+              save all changes
+            </md-button>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Add Race -->
+    <section class="layout-padding-well">
+      <!-- Add Race -->
+      <div layout="column" layout-align="start stretch">
+        <h4>Add New Race:</h4>
+        <div class="layout-margin-vertical layout-padding-vertical hint border-bottom-1"
+             md-colors="{'border-color': 'background-300'}">
+          Here you can add a new custom race and set whether the race is allowed in the current settlement.
+          <div class="hint layout-margin-top" ng-if="vm.appConfigSettings.global.useSubraces">
+            This system requires there to be at least one subrace, so it populates some defaults. Any of the subraces
+            can be deleted, but if you wish to delete all of the default subraces, a new subrace must be created first.
+          </div>
+        </div>
+        <dg-object-edit class="layout-margin-vertical" object="vm.newObject" group="null" parent="null"
+                        default-text="Enter Race Name..." toggle-message="Add to Allowed Races?" edit-types="['single-allowed', 'hint']"
+                        hint-message="* If this is not selected, this race will have to be added in the Allowed Races dropdown.">
+        </dg-object-edit>
+        <md-button class="md-raised md-primary no-margin-horizontal no-margin-bottom" ng-click="vm.addCustomRace()"
+                   ng-disabled="vm.newObject.name === ''">submit new race</md-button>
+      </div>
+    </section>
+
+  </div>
+</md-content>

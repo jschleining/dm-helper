@@ -1,0 +1,97 @@
+<md-content>
+  <div layout="column">
+
+    <!-- Header -->
+    <section class="layout-padding-well border-bottom-1" layout="column" layout-align="start stretch"
+             md-colors="{'border-color': 'background-300'}">
+      <h3>Subrace Settings</h3>
+      <div class="hint layout-margin-top">
+        <ul class="no-margin no-padding">
+          <li layout="row" layout-align="start start">
+            <i class="material-icons">chevron_right</i>
+            <span class="hint">Add, edit, or remove subraces from a selected race.</span>
+          </li>
+          <li layout="row" layout-align="start start">
+            <i class="material-icons">chevron_right</i>
+            <span class="hint">Note that some edit options are only available for custom races.</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Select Race to Edit -->
+    <section class="layout-padding-well border-bottom-1" layout="column" layout-align="start stretch"
+             md-colors="{'border-color': 'background-300'}">
+      <!-- Race Selection  -->
+      <div layout="row" layout-align="space-between center">
+        <h4>Choose Race to Edit:</h4>
+        <md-button class="md-icon-button icon-button-override no-margin-horizontal no-padding inherit-width"
+                   md-no-ink aria-label="Help Text">
+          <md-tooltip class="tooltip-override layout-padding-vertical" md-direction="left">
+            * This list is only populated with races you have selected as allowed in the community.
+          </md-tooltip>
+          <i class="material-icons">help_outline</i>
+        </md-button>
+      </div>
+      <md-input-container class="no-padding">
+        <md-select ng-model="vm.tempObject" ng-model-options="{trackBy: '$value.id'}" aria-label="Race Editing"
+                   placeholder="Select a Race:" ng-change="vm.setEditObject(vm.tempObject)"
+                   ng-class="{'no-margin': '!vm.editObject.id', 'no-margin-top': 'vm.editObject.id'}">
+          <md-option ng-value="race" ng-repeat="race in vm.selectedRaces | orderBy: 'name'">
+            <span>{{race.name}}</span>
+          </md-option>
+        </md-select>
+      </md-input-container>
+    </section>
+
+    <!-- Subrace Settings -->
+    <section class="layout-padding-well border-bottom-1" layout="column" layout-align="start stretch"
+             ng-if="vm.editObject.id" md-colors="{'border-color': 'background-300'}">
+      <div class="layout-margin-vertical layout-padding-vertical hint border-bottom-1"
+           md-colors="{'border-color': 'background-300'}">
+        This system requires there to be at least one subrace, so some defaults are automatically added.
+        <div class="hint layout-margin-top">
+          Any of the subraces can be deleted, but if you wish to delete all of the default subraces, a new subrace
+          must be created first.
+        </div>
+      </div>
+      <!-- Race Name -->
+        <dg-object-edit class="layout-margin-vertical" object="vm.editObject" group="null" parent="null"
+            edit-types="['no-edit']"></dg-object-edit>
+
+      <!-- Edit Subraces -->
+      <div ng-if="vm.editObject.subraces.length > 0">
+        <ul class="layout-padding-left layout-margin-left">
+          <li class="no-padding layout-margin-bottom" ng-repeat="subrace in vm.editObject.subraces track by $index"
+              layout="column" layout-align="start stretch">
+            <dg-object-edit object="subrace" group="vm.editObject.subraces" parent="vm.editObject"
+                edit-types="['group-allowed', 'delete', 'save']" on-save="vm.updateCustomObject(subrace, vm.editObject, false)"
+                on-delete="vm.deleteCustomObject(subrace, vm.editObject, false)"
+                on-change-allowed="vm.resetObjectWeight(vm.editObject.subraces, subrace)"></dg-object-edit>
+          </li>
+          <li class="no-padding">
+            <div layout="column" layout-align="start stretch">
+              <md-button class="md-raised md-primary no-margin" ng-click="vm.updateCustomObject(vm.editObject, null, true)"
+                         ng-disabled="vm.checkForButtonDisabled(vm.editObject.subraces, 'name', '', {'matchType': 'exact'})">
+                save all changes
+              </md-button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Add Subrace -->
+    <section class="layout-padding-well" ng-if="vm.editObject.id">
+      <div layout="column" layout-align="start stretch">
+        <h4>Add New Subrace:</h4>
+        <dg-object-edit class="layout-margin-vertical" object="vm.newObject" group="vm.editObject.subraces"
+                        parent="vm.editObject" default-text="Enter Subrace Name...">
+        </dg-object-edit>
+        <md-button class="md-raised md-primary no-margin-horizontal no-margin-bottom" ng-click="vm.addCustomSubRace(vm.editObject)"
+                   ng-disabled="vm.newObject.name === ''">submit new subrace</md-button>
+      </div>
+    </section>
+
+  </div>
+</md-content>

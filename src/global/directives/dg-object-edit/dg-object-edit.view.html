@@ -1,0 +1,100 @@
+<md-input-container class="no-padding no-margin no-input-spacer"  layout="column" layout="start stretch">
+
+  <!-- Input Field. Only editable if the object has a custom id. Might make this configurable later. -->
+  <div layout="column" layout="start stretch">
+    <label></label>
+    <input ng-model="object.name" placeholder="{{defaultText}}" type="text" aria-label="Object Name"
+        ng-disabled="!checkForCustom() || checkForEditTypes(['no-edit'])">
+  </div>
+
+  <!-- Allowed, Delete, Save, and Hint.  -->
+  <div layout="row" layout-align="space-between center" ng-if="checkForEditTypes(['single-allowed', 'group-allowed', 'delete', 'save', 'hint'])">
+    <!-- Allowed Switch -->
+    <div>
+      <md-switch ng-model="object.isAllowed" aria-label="Object Allowed" class="md-primary no-margin"
+                 ng-change="onChangeAllowed()" ng-if="checkForEditTypes(['single-allowed'])">
+        {{toggleMessage || 'Allowed: ' + object.isAllowed}}
+      </md-switch>
+      <md-switch ng-model="object.isAllowed" aria-label="Object Allowed" class="md-primary no-margin"
+                 ng-change="onChangeAllowed()" ng-if="checkForEditTypes(['group-allowed'])"
+                 ng-disabled="checkForLastActive()">
+        Allowed: {{object.isAllowed}}
+      </md-switch>
+    </div>
+
+    <!-- Save, Delete, and Hint -->
+    <div layout="row" layout-align="end center" ng-if="checkForEditTypes(['save', 'delete', 'hint'])">
+
+      <!-- Save and Delete. Cannot exist with hint in this row. -->
+      <div layout="row" layout-align="end center" ng-if="checkForEditTypes(['save', 'delete']) && !checkForEditTypes(['hint'])">
+        <md-button class="md-icon-button icon-button-override no-margin-right no-padding inherit-width"
+                   ng-click="onDelete()"
+                   ng-disabled="checkForEditTypes(['allowed']) && checkForLastActive()"
+                   ng-if="checkForEditTypes(['delete']) && checkForCustom()">
+          <i class="material-icons">clear</i>
+        </md-button>
+        <md-button class="md-icon-button icon-button-override no-margin-right no-padding inherit-width"
+                   ng-click="onSave()"
+                   ng-disabled="!checkForInputText(object.name)" ng-if="checkForEditTypes(['save'])">
+          <i class="material-icons">save</i>
+        </md-button>
+      </div>
+
+      <!-- Hint. Cannot exist with save and delete in this row. -->
+      <div layout="row" layout-align="end center" ng-if="checkForEditTypes(['hint']) && !checkForEditTypes(['save', 'delete'])">
+        <md-button class="md-icon-button icon-button-override no-margin-horizontal no-padding inherit-width"
+                   md-no-ink aria-label="Help Text">
+          <md-tooltip class="tooltip-override layout-padding-vertical" md-direction="left">
+            {{hintMessage}}
+          </md-tooltip>
+          <i class="material-icons">help_outline</i>
+        </md-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Weight -->
+  <div layout="row" layout-align="space-between center" ng-if="checkForEditTypes(['percent', 'percentage', 'weight'])">
+    <div  layout="row" layout-align="start center">
+      <span ng-if="checkForEditTypes(['percent', 'percentage'])">Percent
+        <span ng-if="checkForEditTypes(['percentage'])">age</span>:
+      </span>
+      <span ng-if="checkForEditTypes(['weight'])">Weight:</span>
+    </div>
+
+    <div layout="row" layout-align="end center">
+      <div ng-if="checkForEditTypes(['weight-custom'])">
+        <span class="layout-padding-horizontal layout-margin-right">{{object.weight.custom}}</span>
+      </div>
+      <div ng-if="checkForEditTypes(['weight-default'])">
+        <span class="layout-padding-horizontal layout-margin-right">{{object.weight.default}}</span>
+      </div>
+
+      <div ng-if="checkForEditTypes(['weight-custom'])">
+        <md-button class="md-icon-button icon-button-override no-margin-horizontal no-padding inherit-width"
+                   ng-disabled="!checkForInBounds(object.weight.custom, -1, {type: 'min', value: 0}) || !object.isAllowed"
+                   ng-click="onRemoveWeight()" md-no-ink aria-label="Subtract">
+          <i class="material-icons">remove</i>
+        </md-button>
+        <md-button class="md-icon-button icon-button-override no-margin-horizontal no-padding inherit-width"
+                   ng-disabled="!checkForInBounds(object.weight.custom, 1, {type: 'max', value: 100}) || !object.isAllowed"
+                   ng-click="onAddWeight()" md-no-ink aria-label="Add">
+          <i class="material-icons">add</i>
+        </md-button>
+      </div>
+      <div ng-if="checkForEditTypes(['weight-default'])">
+        <md-button class="md-icon-button icon-button-override no-margin-horizontal no-padding inherit-width"
+                   ng-disabled="checkForInBounds(object.weight.default, -1, {type: 'min', value: 0}) || !object.isAllowed"
+                   ng-click="onRemoveWeight()" md-no-ink aria-label="Subtract">
+          <i class="material-icons">remove</i>
+        </md-button>
+        <md-button class="md-icon-button icon-button-override no-margin-horizontal no-padding inherit-width"
+                   ng-disabled="checkForInBounds(object.weight.default, 1, {type: 'max', value: 100}) || !object.isAllowed"
+                   ng-click="onAddWeight()" md-no-ink aria-label="Add">
+          <i class="material-icons">add</i>
+        </md-button>
+      </div>
+    </div>
+  </div>
+
+</md-input-container>

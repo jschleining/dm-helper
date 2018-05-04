@@ -1,7 +1,7 @@
 var app = angular.module('dmHelperApp');
 
-app.controller('DemographicsGeneratorController', ['$scope', '$mdSidenav', 'Utilities', 'Demographics',
-function ($scope, $mdSidenav, Utilities, Demographics) {
+app.controller('DemographicsGeneratorController', ['$scope', '$mdComponentRegistry', '$mdSidenav', 'Utilities', 'Demographics',
+function ($scope, $mdComponentRegistry, $mdSidenav, Utilities, Demographics) {
   var vm_ = this;
 
   //#region vars
@@ -10,12 +10,16 @@ function ($scope, $mdSidenav, Utilities, Demographics) {
   //#endregion
 
   //#region Local Settings
+  vm_.isSideNavOpened = false;
 
   //#region Templates
   vm_.settingsTemplateBase = 'global/components/demographics-generator/settings/';
   vm_.settingsTemplates = {
+    globalSettings: vm_.settingsTemplateBase + 'demographics-generator-global-settings.view.html',
+    ageSettings: vm_.settingsTemplateBase + 'demographics-generator-age-settings.view.html',
+    authoritySettings: vm_.settingsTemplateBase + 'demographics-generator-authority-settings.view.html',
     raceSettings: vm_.settingsTemplateBase + 'demographics-generator-race-settings.view.html',
-    ageSettings: vm_.settingsTemplateBase + 'demographics-generator-age-settings.view.html'
+    subraceSettings: vm_.settingsTemplateBase + 'demographics-generator-subrace-settings.view.html'
   };
   vm_.settingsTemplate = '';
   //#endregion
@@ -27,24 +31,37 @@ function ($scope, $mdSidenav, Utilities, Demographics) {
   vm_.editArray = [];
   //#endregion
 
-  vm_.tagSelection = angular.copy(Demographics.defaultTagList);
-
+  //#region App Config Vars
+  vm_.appConfigSettings = {
+    global: {
+      useSubraces: false,
+      useAgeCategories: false
+    },
+    subraceSettings: {
+      editMode: false
+    },
+    ageSettings: {
+      editMode: false,
+      editType: 'individual'
+    }
+  };
+  //#endregion
 
   //#region Race Vars
   vm_.raceSelection = angular.copy(Demographics.defaultRaces);
-  vm_.raceSettingMode = 'Race';
-  vm_.generateSubraces = 'No';
   vm_.selectedRaces = [];
   //#endregion
 
   //#region Age Vars
-  vm_.ageSettingsMode = 'Individual';
   vm_.ageSelection = angular.copy(Demographics.defaultAgeCategories);
+  vm_.ageSettingsMode = 'Individual';
   //#endregion
 
-  //#region Racial Mix Vars
-
+  //#region Authority Vars
+  vm_.authoritySelection = angular.copy(Demographics.defaultAuthorities);
   //#endregion
+
+  vm_.tagSelection = angular.copy(Demographics.defaultTagList);
 
   //#endregion
 
@@ -52,26 +69,27 @@ function ($scope, $mdSidenav, Utilities, Demographics) {
 
   //#region function definitions
 
-  vm_.updateAges = updateAges_;
-  vm_.updateAge = updateAge_;
-
   //#region General Functions
   vm_.checkForCustomObjects = checkForCustomObjects_;
   vm_.checkForButtonDisabled = checkForButtonDisabled_;
   vm_.clearEdits = clearEdits_;
+  vm_.closeSettingsSidebar = closeSettingsSidebar_;
+  vm_.populateArrayList = populateArrayList_;
   vm_.resetConfigSettings = resetConfigSettings_;
   vm_.setEditArray = setEditArray_;
   vm_.setEditObject = setEditObject_;
-  vm_.toggleSettingsSidebar = toggleSettingsSidebar_;
+  vm_.openSettingsSidebar = openSettingsSidebar_;
   //#endregion
 
   //#region Object Functions
   vm_.addNewObject = addNewObject_;
   vm_.createNewObject = createNewObject_;
-  vm_.removeCustomObject = removeCustomObject_;
+  vm_.deleteCustomObject = deleteCustomObject_;
+  vm_.deleteCustomObjectGlobal = deleteCustomObjectGlobal_;
   vm_.resetNewObject = resetNewObject_;
   vm_.updateAllowedObjects = updateAllowedObjects_;
   vm_.updateCustomObject = updateCustomObject_;
+  vm_.updateCustomObjectGlobal = updateCustomObjectGlobal_;
   vm_.updateObjectWeight = updateObjectWeight_;
   vm_.updateRemovedWeightInArrayList = updateRemovedWeightInArrayList_;
   //#endregion
@@ -79,14 +97,17 @@ function ($scope, $mdSidenav, Utilities, Demographics) {
   //#region Race Functions
   vm_.addCustomRace = addCustomRace_;
   vm_.addCustomSubRace = addCustomSubRace_;
-  vm_.deleteCustomRace = deleteCustomRace_;
-  vm_.deleteCustomSubRace = deleteCustomSubRace_;
   vm_.getDefaultAllowedRaces = getDefaultAllowedRaces_;
   vm_.populateDefaultSelectedRaces = populateDefaultSelectedRaces_;
-  vm_.resetSubraceWeight = resetSubraceWeight_;
+  vm_.resetObjectWeight = resetObjectWeight_;
   vm_.updateAllowedRaces = updateAllowedRaces_;
-  vm_.updateCustomRace = updateCustomRace_;
-  vm_.updateCustomSubrace = updateCustomSubrace_;
+  //#endregion
+
+  //#region Age Functions
+  vm_.updateGlobalDefaultAges = updateGlobalDefaultAges_;
+  vm_.updateAges = updateAges_;
+  vm_.updateAge = updateAge_;
+  vm_.updateAgeConfigs = updateAgeConfigs_;
   //#endregion
 
   //#endregion
@@ -147,10 +168,17 @@ function ($scope, $mdSidenav, Utilities, Demographics) {
   }
 
   /**
+   * Close the sidebar. Stopped using toggle because angular material doesn't send close events. Doing it manually.
+   */
+  function closeSettingsSidebar_() {
+    vm_.settingsTemplate = '';
+    vm_.clearEdits();
+  }
+
+  /**
    * Reset Settings options that are specific to setting configs.
    */
   function resetConfigSettings_() {
-    vm_.raceSettingMode = 'Race';
     vm_.resetNewObject();
     vm_.clearEdits();
   }
@@ -174,15 +202,25 @@ function ($scope, $mdSidenav, Utilities, Demographics) {
   }
 
   /**
-   * Open or close the sidebar.
+   * Open the sidebar. Stopped using toggle because angular material doesn't send close events. Doing it manually.
+   *
+   * @param {object} params Object containing parameters for an action to be executed on open.
    */
-  function toggleSettingsSidebar_(template) {
+  function openSettingsSidebar_(template, params) {
+    console.log(params);
     vm_.resetConfigSettings();
+    if (params) {
+      switch(params.action) {
+        case 'populateEditArray':
+          vm_.editArray = angular.copy(params.object);
+          break;
+      }
+    }
     vm_.settingsTemplate = vm_.settingsTemplates[template];
-    $mdSidenav('md-sidenav-right').toggle().
-    then(function() {
-      // do nothing.
-    });
+    vm_.isSideNavOpened = !$mdSidenav('md-sidenav-right').isOpen();
+    if(vm_.isSideNavOpened) {
+      $mdSidenav('md-sidenav-right').open();
+    }
   }
   //#endregion
 
@@ -221,18 +259,68 @@ function ($scope, $mdSidenav, Utilities, Demographics) {
   }
 
   /**
-   * Remove a custom object.
+   * Remove a custom object, including all peripheral requirements.
+   *
+   * @param {object} object The object to be deleted.
+   * @param {object} parentObject The parent of the object to be deleted.
+   * @param {Boolean} clearEdits Whether to clear the temp objects or not.
+   */
+  function deleteCustomObject_(object, parentObject, clearEdits) {
+    var arrayList = vm_.populateArrayList(object, parentObject);
+    vm_.updateRemovedWeightInArrayList(arrayList, object);
+    vm_.deleteCustomObjectGlobal(object, arrayList);
+    if (clearEdits) {
+      vm_.clearEdits();
+    }
+  }
+
+  /**
+   * Delete a custom object.
    *
    * @param {object} object The object to be deleted.
    * @param {Array} arrayList The list of arrays to remove the object from.
    */
-  function removeCustomObject_(object, arrayList) {
+  function deleteCustomObjectGlobal_(object, arrayList) {
     for (var array = 0; array < arrayList.length; array++) {
       var objectIndex = Utilities.getObjectIndex(arrayList[array], 'id', object.id);
       if (objectIndex > -1) {
         arrayList[array].splice(objectIndex, 1);
       }
     }
+  }
+
+  /**
+   * Populate a list of arrays to edit, based on type of edits being made.
+   *
+   * @param {object} object The object to be deleted.
+   * @param {object} parentObject The parent of the object to be deleted.
+   */
+  function populateArrayList_(object, parentObject) {
+    var arrayList = [];
+    switch (object.type) {
+      case 'race':
+        arrayList = [
+          vm_.raceSelection,
+          vm_.selectedRaces
+        ];
+        break;
+      case 'subrace':
+        var raceSelectionIndex = Utilities.getObjectIndex(vm_.raceSelection, 'id', parentObject.id);
+        var selectedRacesIndex = Utilities.getObjectIndex(vm_.selectedRaces, 'id', parentObject.id);
+        arrayList = [
+          vm_.raceSelection[raceSelectionIndex].subraces,
+          vm_.selectedRaces[selectedRacesIndex].subraces,
+          vm_.editObject.subraces
+        ];
+        break;
+      case 'authority':
+        arrayList = [
+          vm_.authoritySelection,
+          vm_.editArray
+        ];
+        break;
+    }
+    return arrayList;
   }
 
   /**
@@ -244,6 +332,18 @@ function ($scope, $mdSidenav, Utilities, Demographics) {
       name: '',
       type: ''
     };
+  }
+
+  /**
+   * Reset the weight of an object by toggling it.
+   *
+   * @param {Array} objectArray The array of objects to be checked.
+   * @param {object} object The object to be updated.
+   */
+  function resetObjectWeight_(objectArray, object) {
+    var object_ = angular.copy(object);
+    var modifier = (object_.isAllowed) ? object_.weight.default : object_.weight.custom * -1;
+    vm_.updateObjectWeight(objectArray, object_, modifier, 'custom', true);
   }
 
   /**
@@ -268,16 +368,47 @@ function ($scope, $mdSidenav, Utilities, Demographics) {
     }
   }
 
+  // not saving correctly
+  vm_.updateCustomArray = updateCustomArray_;
+  function updateCustomArray_(type, array, clearEdits) {
+    var object = {type: type};
+    var arrayList = vm_.populateArrayList(object, null);
+    for (var arrayCounter = 0; arrayCounter < arrayList.length; arrayCounter++) {
+      arrayList[arrayCounter] = angular.copy(array);
+      console.log('Array: ' + arrayCounter, angular.copy(arrayList[arrayCounter]));
+    }
+    if (clearEdits) {
+      vm_.clearEdits();
+    }
+  }
+
   /**
-   * Update a custom object.
+   * Update a Custom Object.
+   *
+   * @param {object} object Object to update.
+   * @param {object} parentObject Parent of the object to update.
+   * @param {Boolean} clearEdits Whether to clear the temp objects or not.
+   */
+  function updateCustomObject_(object, parentObject, clearEdits) {
+    var arrayList = vm_.populateArrayList(object, parentObject);
+    vm_.updateCustomObjectGlobal(object, arrayList);
+    if (clearEdits) {
+      vm_.clearEdits();
+    }
+  }
+
+  /**
+   * Update a custom object across all arrays it exists in.
    *
    * @param {object} object The object to be updated.
    * @param {Array} arrayList The list of arrays to update the object in.
    */
-  function updateCustomObject_(object, arrayList) {
+  function updateCustomObjectGlobal_(object, arrayList) {
     for (var array = 0; array < arrayList.length; array++) {
       var objectIndex = Utilities.getObjectIndex(arrayList[array], 'id', object.id);
-      arrayList[array][objectIndex] = object;
+      if (objectIndex > -1) {
+        arrayList[array][objectIndex] = angular.copy(object);
+      }
     }
   }
 
@@ -292,7 +423,6 @@ function ($scope, $mdSidenav, Utilities, Demographics) {
    * @param {Boolean} customOnly If true, do not modify any value currently at its default weight.
    */
   function updateObjectWeight_(array, object, modifier, setting, customOnly) {
-    console.log('array, object, modifier, setting', array, object, modifier, setting);
     // potentially configurable way of setting the total possible weight of an array
     var maxWeight = 100;
     // get the index of the object being modified, as well as the index of the next object
@@ -330,8 +460,10 @@ function ($scope, $mdSidenav, Utilities, Demographics) {
   function updateRemovedWeightInArrayList_(arrayList, object) {
     for (var array = 0; array < arrayList.length; array++) {
       var objectIndex = Utilities.getObjectIndex(arrayList[array], 'id', object.id);
-      arrayList[array][objectIndex].isAllowed = false;
-      vm_.resetSubraceWeight(arrayList[array],arrayList[array][objectIndex]);
+      if (objectIndex > -1) {
+        arrayList[array][objectIndex].isAllowed = false;
+        vm_.resetObjectWeight(arrayList[array],arrayList[array][objectIndex]);
+      }
     }
   }
   //#endregion
@@ -364,12 +496,12 @@ function ($scope, $mdSidenav, Utilities, Demographics) {
 
     for (var array = 0; array < arrayList.length; array++) {
       var raceIndex = Utilities.getObjectIndex(arrayList[array], 'name', name_);
-
       // Add Default Subrace
       if (Utilities.getObjectIndex(arrayList[array][raceIndex].subraces, 'name', 'Default') < 0) {
         vm_.addCustomSubRace(arrayList[array][raceIndex], {
           defaultName: 'Default',
-          tags: []
+          tags: [],
+          isAllowed: true
         });
       }
 
@@ -398,7 +530,7 @@ function ($scope, $mdSidenav, Utilities, Demographics) {
     if (params_ && params_.defaultName) {
       vm_.newObject.name = params_.defaultName;
     }
-    vm_.newObject.isAllowed = race.isAllowed;
+    vm_.newObject.isAllowed = (params_ && params_.hasOwnProperty('isAllowed')) ? params_.isAllowed : race.isAllowed;
     vm_.newObject.type = 'subrace';
     var params = {
       tags: [
@@ -427,52 +559,12 @@ function ($scope, $mdSidenav, Utilities, Demographics) {
       vm_.raceSelection[raceSelectionIndex].subraces,
       race.subraces
     ];
-    if (vm_.newObject.isAllowed) {
+    if (race.isAllowed) {
       var selectedRacesIndex = Utilities.getObjectIndex(vm_.selectedRaces, 'id', race.id);
       arrayList.push(vm_.selectedRaces[selectedRacesIndex].subraces);
     }
     vm_.addNewObject(vm_.newObject, params, arrayList);
     vm_.resetNewObject();
-  }
-
-  /**
-   * Remove a Race.
-   *
-   * @param {object} race Race to remove.
-   * @param {Boolean} clearEdits Whether to clear the temp objects or not.
-   */
-  function deleteCustomRace_(race, clearEdits) {
-    var arrayList = [
-      vm_.raceSelection,
-      vm_.selectedRaces
-    ];
-    vm_.updateRemovedWeightInArrayList(arrayList, race);
-    vm_.removeCustomObject(race, arrayList);
-    if (clearEdits) {
-      vm_.clearEdits();
-    }
-  }
-
-  /**
-   * Remove a Subrace.
-   *
-   * @param {object} race Race to remove the subrace from.
-   * @param {object} subrace Subrace to remove.
-   * @param {Boolean} clearEdits Whether to clear the temp objects or not.
-   */
-  function deleteCustomSubRace_(race, subrace, clearEdits) {
-    var raceSelectionIndex = Utilities.getObjectIndex(vm_.raceSelection, 'id', race.id);
-    var selectedRacesIndex = Utilities.getObjectIndex(vm_.selectedRaces, 'id', race.id);
-    var arrayList = [
-      vm_.raceSelection[raceSelectionIndex].subraces,
-      vm_.selectedRaces[selectedRacesIndex].subraces,
-      vm_.editObject.subraces
-    ];
-    vm_.updateRemovedWeightInArrayList(arrayList, subrace);
-    vm_.removeCustomObject(subrace, arrayList);
-    if (clearEdits) {
-      vm_.clearEdits();
-    }
   }
 
   /**
@@ -509,17 +601,6 @@ function ($scope, $mdSidenav, Utilities, Demographics) {
   }
 
   /**
-   * Reset the weight of a subrace by toggling it.
-   *
-   * @param {Array} objectArray The array of objects to be checked.
-   * @param {object} object The object to be updated.
-   */
-  function resetSubraceWeight_(objectArray, object) {
-    var modifier = (object.isAllowed) ? object.weight.default : object.weight.custom * -1;
-    vm_.updateObjectWeight(objectArray, object, modifier, 'custom', true);
-  }
-
-  /**
    * Get the default set of allowed races.
    *
    * @param {Array} defaultArray The array of default races.
@@ -536,56 +617,47 @@ function ($scope, $mdSidenav, Utilities, Demographics) {
     ];
     vm_.updateAllowedObjects(objectArray, arrayList);
   }
-
-  /**
-   * Update a Race.
-   *
-   * @param {object} race Race to update.
-   * @param {Boolean} clearEdits Whether to clear the temp objects or not.
-   */
-  function updateCustomRace_(race, clearEdits) {
-    var arrayList = [
-      vm_.raceSelection
-    ];
-    if (race.isAllowed) {
-      arrayList.push(vm_.selectedRaces);
-    }
-    vm_.updateCustomObject(race, arrayList);
-    if (clearEdits) {
-      vm_.clearEdits();
-    }
-  }
-
-  /**
-   * Update a Subrace.
-   *
-   * @param {object} race Race to update.
-   * @param {object} subrace Subrace to update.
-   * @param {Boolean} clearEdits Whether to clear the temp objects or not.
-   */
-  function updateCustomSubrace_(race, subrace, clearEdits) {
-    var raceSelectionIndex = Utilities.getObjectIndex(vm_.raceSelection, 'id', race.id);
-    var arrayList = [
-      vm_.raceSelection[raceSelectionIndex].subraces,
-      vm_.editObject.subraces
-    ];
-    if (race.isAllowed) {
-      var selectedRacesIndex = Utilities.getObjectIndex(vm_.selectedRaces, 'id', race.id);
-      arrayList.push(vm_.selectedRaces[selectedRacesIndex].subraces);
-    }
-    vm_.updateCustomObject(subrace, arrayList);
-    if (clearEdits) {
-      vm_.clearEdits();
-    }
-  }
   //#endregion
 
   //#region Age Functions
+  function updateGlobalDefaultAges_(ageArray) {
+    var startingArray = [
+        vm_.raceSelection,
+        vm_.selectedRaces
+    ];
+    var arrayList = [];
 
-  vm_.updateAgeConfigs = updateAgeConfigs_;
+    // loop through starting array
+    for (var array = 0; array < startingArray.length; array++) {
+
+      // loop through individual race array
+      for (var race = 0; race < startingArray[array].length; race++) {
+        arrayList.push(startingArray[array][race].ageCategories);
+        if (startingArray[array][race].subraces.length > 0) {
+
+          for (var subrace = 0; subrace < startingArray[array][race].subraces.length; subrace++) {
+            arrayList.push(startingArray[array][race].subraces[subrace].ageCategories);
+          }
+        }
+      }
+    }
+
+    // loop through array list
+    for (var arrayItem = 0; arrayItem < arrayList.length; arrayItem++) {
+      // loop though age items in each array in the array list
+      for (var age = 0; age < arrayList[arrayItem].length; age++) {
+        // get the corresponding index of the current age item from the ageArray
+        var ageIndex = Utilities.getObjectIndex(ageArray, 'id', arrayList[arrayItem][age].id);
+        // update the item in the arrayList
+        arrayList[arrayItem][age].weight.default = ageArray[ageIndex].weight.default;
+      }
+    }
+  }
+
+
   function updateAgeConfigs_(settingsMode) {
     if (settingsMode === 'Global') {
-      vm_.editArray = vm_.setEditArray(vm_.ageSelection);
+      vm_.setEditArray(vm_.ageSelection);
     } else {
       vm_.clearEdits();
     }
@@ -627,6 +699,18 @@ function ($scope, $mdSidenav, Utilities, Demographics) {
   }
 
 
+  //#endregion
+
+  //#region Watchers
+  // Watching the sidebar. Toggle doesn't send close events, so this was implemented.
+  $scope.$watch(function(){
+    return $mdComponentRegistry.get('md-sidenav-right') ? $mdSidenav('md-sidenav-right').isOpen() : false;
+  }, function(newVal){
+    vm_.isSideNavOpened = newVal;
+    if (!vm_.isSideNavOpened) {
+      vm_.closeSettingsSidebar();
+    }
+  });
   //#endregion
 
 }]);

@@ -1,17 +1,14 @@
 <md-content>
   <div layout="column">
+    <!-- TODO: Finish Age Categories -->
 
     <!-- Header -->
-    <section class="layout-padding-well border-bottom-1" layout="column"
-             md-colors="{'border-color': 'background-300'}">
+    <section class="layout-padding-well" layout="column">
       <h3>Age Settings</h3>
-
-
       <div class="hint layout-margin-vertical">
         Age distribution is done by weight. If the 'Adult' category has 50 in it, for example, there will be
         a 50% chance for any given member of that race to be in the 'Adult' age category.
       </div>
-
       <!-- Set Age Category Edit Mode -->
       <md-switch ng-model="vm.ageSettingsMode" aria-label="Age Settings Mode" ng-change="vm.updateAgeConfigs(vm.ageSettingsMode)"
                  ng-true-value="'Global'" ng-false-value="'Individual'" class="md-primary no-margin-top">
@@ -27,24 +24,26 @@
           This cannot be undone.
         </div>
         <ul class="no-margin-top no-padding">
-          <li ng-repeat="age in vm.ageSelection track by $index" layout="row" layout-align="space-between center">
+          <li ng-repeat="age in vm.editArray track by $index" layout="row" layout-align="space-between center">
             <span>{{age.name}}</span>
             <span layout="row" layout-align="end center">
               <span class="layout-padding-horizontal layout-margin-right">{{age.weight.default}}</span>
-
-              <md-button class="md-icon-button icon-button-override no-margin-horizontal no-padding inherit-width" ng-disabled="age.weight.default === 0"
-                  ng-click="vm.updateObjectWeight(vm.ageSelection, age, -1, 'default')" md-no-ink aria-label="Subtract">
+              <md-button class="md-icon-button icon-button-override no-margin-horizontal no-padding inherit-width"
+                  ng-disabled="age.weight.default === 0"
+                  ng-click="vm.updateObjectWeight(vm.editArray, age, -1, 'default')" md-no-ink aria-label="Subtract">
                 <i class="material-icons">remove</i>
               </md-button>
-              <md-button class="md-icon-button icon-button-override no-margin-horizontal no-padding inherit-width" ng-disabled="age.weight.default === 0"
-                  ng-click="vm.updateObjectWeight(vm.ageSelection, age, 1, 'default')" md-no-ink aria-label="Add">
+              <md-button class="md-icon-button icon-button-override no-margin-horizontal no-padding inherit-width"
+                  ng-disabled="age.weight.default === 0"
+                  ng-click="vm.updateObjectWeight(vm.editArray, age, 1, 'default')" md-no-ink aria-label="Add">
                 <i class="material-icons">add</i>
               </md-button>
-
             </span>
           </li>
         </ul>
-        <md-button class="md-raised md-primary no-margin" ng-click="vm.updateAges()">Update Age Defaults</md-button>
+        <md-button class="md-raised md-primary no-margin" ng-click="vm.updateGlobalDefaultAges(vm.editArray)">
+          Update Age Defaults
+        </md-button>
       </section>
 
       <!-- Select Races to Edit -->
@@ -62,7 +61,24 @@
           </md-select>
         </md-input-container>
       </section>
+
+      <section class="layout-margin-top" layout="column" ng-if="vm.ageSettingsMode === 'Individual' && vm.editObject.name">
+        <h4>Race Defaults: {{vm.editObject.name}}</h4>
+        <div class="layout-margin-vertical layout-padding-vertical hint">
+          Here you can set the default age values for this race as well as all of its subraces. Turning on 'Edit Race
+          Defaults' will allow you to set the default ages for each subrace individually.
+        </div>
+
+        <md-switch ng-model="vm.editSubraces" aria-label="Subrace Settings" class="md-primary no-margin-top">
+          Edit Subrace Defaults: <span class="bold" md-colors="{'color': 'primary-500'}">{{vm.editSubraces}}</span>
+        </md-switch>
+
+        <!--<span>{{vm.editObject.name}}</span>-->
+
+      </section>
     </section>
+
+
 
     <!-- Original below here -->
 
@@ -82,13 +98,13 @@
               layout="row" layout-align="space-between center">
             <span>{{age.name}}</span>
             <span layout="row" layout-align="end center">
-                <span class="layout-padding-horizontal layout-margin-right">{{age.weight}}</span>
+                <span class="layout-padding-horizontal layout-margin-right">{{age.weight.default}}</span>
                 <md-button class="md-icon-button no-margin" md-no-ripple aria-label="Remove"
-                           ng-disabled="age.weight === 0" ng-click="vm.updateAge(race.ageCategories, $index, -1)">
+                           ng-disabled="age.weight.default === 0" ng-click="vm.updateAge(race.ageCategories, $index, -1)">
                   <i class="material-icons">remove</i>
                 </md-button>
                 <md-button class="md-icon-button no-margin" md-no-ripple aria-label="Add"
-                           ng-disabled="age.weight === 100" ng-click="vm.updateAge(race.ageCategories, $index, 1)">
+                           ng-disabled="age.weight.default === 100" ng-click="vm.updateAge(race.ageCategories, $index, 1)">
                   <i class="material-icons">add</i>
                 </md-button>
               </span>
@@ -97,6 +113,13 @@
       </div>
 
     </section>
+
+    <ul class="no-margin no-padding">
+      <li ng-repeat="race in vm.selectedRaces track by $index">
+        <span>{{race.name}}</span>
+      </li>
+    </ul>
+
   </div>
 </md-content>
 
@@ -104,30 +127,26 @@
 
 
 
+<!--<div class="layout-margin-top" ng-if="vm.raceEditing.subraces.length > 0">-->
+  <!--<ul class="no-margin-top layout-padding-left layout-margin-left layout-margin-bottom">-->
+    <!--<li class="no-padding layout-margin-bottom" ng-repeat="subrace in vm.raceEditing.subraces track by $index"-->
+        <!--layout="column" layout-align="start stretch">-->
+      <!--<md-input-container class="no-margin no-padding no-input-spacer">-->
+        <!--<input ng-model="subrace.name" minlength="1" type="text" ng-disabled="subrace.id.indexOf('cust') === -1">-->
+      <!--</md-input-container>-->
 
+      <!--&lt;!&ndash;<div layout="row" layout-align="space-between center">&ndash;&gt;-->
+      <!--&lt;!&ndash;<span class="layout-margin-right">Children%: {{subrace.percentOfTotalChildrenForRace}}</span>&ndash;&gt;-->
 
+      <!--&lt;!&ndash;<span layout="column" layout-align="center center">&ndash;&gt;-->
+      <!--&lt;!&ndash;<md-tooltip md-direction="left">Percent of children of this subrace compared to the total children of this race</md-tooltip>&ndash;&gt;-->
+      <!--&lt;!&ndash;<i class="material-icons">help</i>&ndash;&gt;-->
+      <!--&lt;!&ndash;</span>&ndash;&gt;-->
+      <!--&lt;!&ndash;</div>&ndash;&gt;-->
 
-
-<div class="layout-margin-top" ng-if="vm.raceEditing.subraces.length > 0">
-  <ul class="no-margin-top layout-padding-left layout-margin-left layout-margin-bottom">
-    <li class="no-padding layout-margin-bottom" ng-repeat="subrace in vm.raceEditing.subraces track by $index"
-        layout="column" layout-align="start stretch">
-      <md-input-container class="no-margin no-padding no-input-spacer">
-        <input ng-model="subrace.name" minlength="1" type="text" ng-disabled="subrace.id.indexOf('cust') === -1">
-      </md-input-container>
-
-      <!--<div layout="row" layout-align="space-between center">-->
-      <!--<span class="layout-margin-right">Children%: {{subrace.percentOfTotalChildrenForRace}}</span>-->
-
-      <!--<span layout="column" layout-align="center center">-->
-      <!--<md-tooltip md-direction="left">Percent of children of this subrace compared to the total children of this race</md-tooltip>-->
-      <!--<i class="material-icons">help</i>-->
-      <!--</span>-->
-      <!--</div>-->
-
-    </li>
-  </ul>
-</div>
+    <!--</li>-->
+  <!--</ul>-->
+<!--</div>-->
 
 
 

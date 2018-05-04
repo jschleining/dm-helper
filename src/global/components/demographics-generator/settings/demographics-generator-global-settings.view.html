@@ -1,0 +1,60 @@
+<md-content>
+  <div layout="column"  layout-align="start stretch">
+    <!-- Header -->
+    <section class="layout-padding-well border-bottom-1" layout="column" layout-align="start stretch"
+        md-colors="{'border-color': 'background-300'}">
+      <h3>Global Settings</h3>
+      <div class="hint layout-margin-top">
+        <ul class="no-margin no-padding">
+          <li layout="row" layout-align="start start">
+            <i class="material-icons">chevron_right</i>
+            <span class="hint">Activate or deactivate entire settings sections.</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Settings -->
+    <section  class="layout-padding-well" layout="column" layout-align="start stretch">
+
+      <!-- Select if Subraces are used -->
+      <div layout="row" layout-align="space-between center"
+           md-colors="{'border-color': 'background-300'}">
+        <md-switch ng-model="vm.appConfigSettings.global.useSubraces" aria-label="Subrace Global Config"
+                   ng-change="vm.clearEdits()" class="md-primary no-margin">
+          Subraces Enabled: <span class="bold" md-colors="{'color': 'primary-500'}">
+            {{vm.appConfigSettings.global.useSubraces}}
+          </span>
+        </md-switch>
+        <md-button class="md-icon-button icon-button-override no-margin-horizontal no-padding inherit-width"
+                   aria-label="Help Text" md-no-ink >
+          <md-tooltip class="tooltip-override layout-padding-vertical" md-direction="left">
+            * Choose whether subraces are active in the generator.<br>
+            * Deactivating this will hide all related options from settings menus and results.
+          </md-tooltip>
+          <i class="material-icons">help_outline</i>
+        </md-button>
+      </div>
+
+      <!-- Select if Age Categories are used -->
+      <div layout="row" layout-align="space-between center"
+           md-colors="{'border-color': 'background-300'}">
+        <md-switch ng-model="vm.appConfigSettings.global.useAgeCategories" aria-label="Age Category Global Config"
+                   ng-change="vm.clearEdits()" class="md-primary no-margin">
+          Age Categories Enabled: <span class="bold" md-colors="{'color': 'primary-500'}">
+            {{vm.appConfigSettings.global.useAgeCategories}}
+          </span>
+        </md-switch>
+        <md-button class="md-icon-button icon-button-override no-margin-horizontal no-padding inherit-width"
+                   aria-label="Help Text" md-no-ink >
+          <md-tooltip class="tooltip-override layout-padding-vertical" md-direction="left">
+            * Choose whether age categories are active in the generator.<br>
+            * Deactivating this will hide all related options from settings menus and results.
+          </md-tooltip>
+          <i class="material-icons">help_outline</i>
+        </md-button>
+      </div>
+
+    </section>
+  </div>
+</md-content>

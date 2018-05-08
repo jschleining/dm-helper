@@ -410,7 +410,8 @@ app.service('Demographics', function () {
       isAllowed: true,
       type: 'authority',
       tags: [
-        service_.defaultTagList.dflt
+        service_.defaultTagList.dflt,
+        service_.defaultTagList.dmg
       ],
       weight: {
         default: 60,
@@ -423,7 +424,8 @@ app.service('Demographics', function () {
       isAllowed: true,
       type: 'authority',
       tags: [
-        service_.defaultTagList.dflt
+        service_.defaultTagList.dflt,
+        service_.defaultTagList.dmg
       ],
       weight: {
         default: 20,
@@ -436,7 +438,8 @@ app.service('Demographics', function () {
       isAllowed: true,
       type: 'authority',
       tags: [
-        service_.defaultTagList.dflt
+        service_.defaultTagList.dflt,
+        service_.defaultTagList.dmg
       ],
       weight: {
         default: 20,
@@ -453,7 +456,8 @@ app.service('Demographics', function () {
       isAllowed: true,
       type: 'age',
       tags: [
-        service_.defaultTagList.dflt
+        service_.defaultTagList.dflt,
+        service_.defaultTagList.phb
       ],
       weight: {
         default: 50,
@@ -466,7 +470,8 @@ app.service('Demographics', function () {
       isAllowed: true,
       type: 'age',
       tags: [
-        service_.defaultTagList.dflt
+        service_.defaultTagList.dflt,
+        service_.defaultTagList.phb
       ],
       weight: {
         default: 35,
@@ -479,7 +484,8 @@ app.service('Demographics', function () {
       isAllowed: true,
       type: 'age',
       tags: [
-        service_.defaultTagList.dflt
+        service_.defaultTagList.dflt,
+        service_.defaultTagList.phb
       ],
       weight: {
         default: 13,
@@ -492,7 +498,8 @@ app.service('Demographics', function () {
       isAllowed: true,
       type: 'age',
       tags: [
-        service_.defaultTagList.dflt
+        service_.defaultTagList.dflt,
+        service_.defaultTagList.phb
       ],
       weight: {
         default: 2,
@@ -501,6 +508,7 @@ app.service('Demographics', function () {
     }
   ];
 
+  // default races available in the app
   service_.defaultRaces = [
     {
       isAllowed: true,
@@ -2950,118 +2958,623 @@ app.service('Demographics', function () {
     }
   ];
 
+  // default community mixtures
   service_.defaultRacialMixtures = [
     {
-      weight: 5,
-      type: 'Exclusive',
+      id: 'mixture-001',
+      name: 'Exclusive',
+      isAllowed: true,
+      type: 'mixture',
+      tags: [
+        service_.defaultTagList.dflt
+      ],
+      weight: {
+        default: 5,
+        custom: 5
+      },
       mix: [
         {
-          raceId: 'dflt-0001',
-          weight: 100
+          id: 'mixture-001a',
+          name: 'Race',
+          isAllowed: true,
+          type: 'mixture',
+          tags: [
+            service_.defaultTagList.dflt
+          ],
+          weight: {
+            default: 100,
+            custom: 100
+          },
+          raceId: 'dflt-0001'
         },
         {
+          id: 'mixture-001b',
           name: 'Other',
-          weight: 0
+          isAllowed: false,
+          type: 'mixture',
+          tags: [
+            service_.defaultTagList.dflt
+          ],
+          weight: {
+            default: 0,
+            custom: 0
+          },
+          races: []
         }
       ]
     },
     {
-      weight: 25,
-      type: 'Isolated',
+      id: 'mixture-002',
+      name: 'Isolated',
+      isAllowed: true,
+      type: 'mixture',
+      tags: [
+        service_.defaultTagList.dflt,
+        service_.defaultTagList.dmg
+      ],
+      weight: {
+        default: 25,
+        custom: 25
+      },
       mix: [
         {
-          raceId: 'dflt-0001',
-          weight: 96
+          id: 'mixture-002a',
+          name: 'Race',
+          isAllowed: true,
+          type: 'mixture',
+          tags: [
+            service_.defaultTagList.dflt,
+            service_.defaultTagList.dmg
+          ],
+          weight: {
+            default: 96,
+            custom: 96
+          },
+          raceId: 'dflt-0001'
         },
         {
-          raceId: 'dflt-0002',
-          weight: 2
+          id: 'mixture-002b',
+          name: 'Race',
+          isAllowed: true,
+          type: 'mixture',
+          tags: [
+            service_.defaultTagList.dflt,
+            service_.defaultTagList.dmg
+          ],
+          weight: {
+            default: 2,
+            custom: 2
+          },
+          raceId: 'dflt-0002'
         },
         {
-          raceId: 'dflt-0003',
-          weight: 1
+          id: 'mixture-002c',
+          name: 'Race',
+          isAllowed: true,
+          type: 'mixture',
+          tags: [
+            service_.defaultTagList.dflt,
+            service_.defaultTagList.dmg
+          ],
+          weight: {
+            default: 1,
+            custom: 1
+          },
+          raceId: 'dflt-0003'
         },
         {
+          id: 'mixture-002d',
           name: 'Other',
-          weight: 1
+          isAllowed: false,
+          type: 'mixture',
+          tags: [
+            service_.defaultTagList.dflt
+          ],
+          weight: {
+            default: 1,
+            custom: 1
+          },
+          races: []
         }
       ]
     },
     {
-      weight: 60,
-      type: 'Mixed',
+      id: 'mixture-003',
+      name: 'Mixed',
+      isAllowed: true,
+      type: 'mixture',
+      tags: [
+        service_.defaultTagList.dflt,
+        service_.defaultTagList.dmg
+      ],
+      weight: {
+        default: 60,
+        custom: 60
+      },
       mix: [
         {
-          raceId: 'dflt-0001',
-          weight: 79
+          id: 'mixture-003a',
+          name: 'Race',
+          isAllowed: true,
+          type: 'mixture',
+          tags: [
+            service_.defaultTagList.dflt,
+            service_.defaultTagList.dmg
+          ],
+          weight: {
+            default: 79,
+            custom: 79
+          },
+          raceId: 'dflt-0001'
         },
         {
-          raceId: 'dflt-0002',
-          weight: 9
+          id: 'mixture-003b',
+          name: 'Race',
+          isAllowed: true,
+          type: 'mixture',
+          tags: [
+            service_.defaultTagList.dflt,
+            service_.defaultTagList.dmg
+          ],
+          weight: {
+            default: 9,
+            custom: 9
+          },
+          raceId: 'dflt-0002'
         },
         {
-          raceId: 'dflt-0003',
-          weight: 5
+          id: 'mixture-003c',
+          name: 'Race',
+          isAllowed: true,
+          type: 'mixture',
+          tags: [
+            service_.defaultTagList.dflt,
+            service_.defaultTagList.dmg
+          ],
+          weight: {
+            default: 5,
+            custom: 5
+          },
+          raceId: 'dflt-0003'
         },
         {
-          raceId: 'dflt-0004',
-          weight: 3
+          id: 'mixture-003d',
+          name: 'Race',
+          isAllowed: true,
+          type: 'mixture',
+          tags: [
+            service_.defaultTagList.dflt,
+            service_.defaultTagList.dmg
+          ],
+          weight: {
+            default: 3,
+            custom: 3
+          },
+          raceId: 'dflt-0004'
         },
         {
-          raceId: 'dflt-0005',
-          weight: 2
+          id: 'mixture-003e',
+          name: 'Race',
+          isAllowed: true,
+          type: 'mixture',
+          tags: [
+            service_.defaultTagList.dflt,
+            service_.defaultTagList.dmg
+          ],
+          weight: {
+            default: 2,
+            custom: 2
+          },
+          raceId: 'dflt-0005'
         },
         {
-          raceId: 'dflt-0006',
-          weight: 1
+          id: 'mixture-003f',
+          name: 'Race',
+          isAllowed: true,
+          type: 'mixture',
+          tags: [
+            service_.defaultTagList.dflt,
+            service_.defaultTagList.dmg
+          ],
+          weight: {
+            default: 1,
+            custom: 1
+          },
+          raceId: 'dflt-0006'
         },
         {
-          raceId: 'dflt-0007',
-          weight: 1
+          id: 'mixture-003g',
+          name: 'Race',
+          isAllowed: true,
+          type: 'mixture',
+          tags: [
+            service_.defaultTagList.dflt,
+            service_.defaultTagList.dmg
+          ],
+          weight: {
+            default: 1,
+            custom: 1
+          },
+          raceId: 'dflt-0007'
         },
         {
+          id: 'mixture-003h',
           name: 'Other',
-          weight: 0
+          isAllowed: false,
+          type: 'mixture',
+          tags: [
+            service_.defaultTagList.dflt
+          ],
+          weight: {
+            default: 0,
+            custom: 0
+          },
+          races: []
         }
       ]
     },
     {
-      weight: 10,
-      type: 'Integrated',
+      id: 'mixture-004',
+      name: 'Integrated',
+      isAllowed: true,
+      type: 'mixture',
+      tags: [
+        service_.defaultTagList.dflt,
+        service_.defaultTagList.dmg
+      ],
+      weight: {
+        default: 10,
+        custom: 10
+      },
       mix: [
         {
-          raceId: 'dflt-0001',
-          weight: 37
+          id: 'mixture-004a',
+          name: 'Race',
+          isAllowed: true,
+          type: 'mixture',
+          tags: [
+            service_.defaultTagList.dflt,
+            service_.defaultTagList.dmg
+          ],
+          weight: {
+            default: 37,
+            custom: 37
+          },
+          raceId: 'dflt-0001'
         },
         {
-          raceId: 'dflt-0002',
-          weight: 20
+          id: 'mixture-004b',
+          name: 'Race',
+          isAllowed: true,
+          type: 'mixture',
+          tags: [
+            service_.defaultTagList.dflt,
+            service_.defaultTagList.dmg
+          ],
+          weight: {
+            default: 20,
+            custom: 20
+          },
+          raceId: 'dflt-0002'
         },
         {
-          raceId: 'dflt-0003',
-          weight: 18
+          id: 'mixture-004c',
+          name: 'Race',
+          isAllowed: true,
+          type: 'mixture',
+          tags: [
+            service_.defaultTagList.dflt,
+            service_.defaultTagList.dmg
+          ],
+          weight: {
+            default: 18,
+            custom: 18
+          },
+          raceId: 'dflt-0003'
         },
         {
-          raceId: 'dflt-0004',
-          weight: 10
+          id: 'mixture-004d',
+          name: 'Race',
+          isAllowed: true,
+          type: 'mixture',
+          tags: [
+            service_.defaultTagList.dflt,
+            service_.defaultTagList.dmg
+          ],
+          weight: {
+            default: 10,
+            custom: 10
+          },
+          raceId: 'dflt-0004'
         },
         {
-          raceId: 'dflt-0005',
-          weight: 7
+          id: 'mixture-004e',
+          name: 'Race',
+          isAllowed: true,
+          type: 'mixture',
+          tags: [
+            service_.defaultTagList.dflt,
+            service_.defaultTagList.dmg
+          ],
+          weight: {
+            default: 7,
+            custom: 7
+          },
+          raceId: 'dflt-0005'
         },
         {
-          raceId: 'dflt-0006',
-          weight: 5
+          id: 'mixture-004f',
+          name: 'Race',
+          isAllowed: true,
+          type: 'mixture',
+          tags: [
+            service_.defaultTagList.dflt,
+            service_.defaultTagList.dmg
+          ],
+          weight: {
+            default: 5,
+            custom: 5
+          },
+          raceId: 'dflt-0006'
         },
         {
-          raceId: 'dflt-0007',
-          weight: 3
+          id: 'mixture-004g',
+          name: 'Race',
+          isAllowed: true,
+          type: 'mixture',
+          tags: [
+            service_.defaultTagList.dflt,
+            service_.defaultTagList.dmg
+          ],
+          weight: {
+            default: 3,
+            custom: 3
+          },
+          raceId: 'dflt-0007'
         },
         {
+          id: 'mixture-004h',
           name: 'Other',
-          weight: 0
+          isAllowed: false,
+          type: 'mixture',
+          tags: [
+            service_.defaultTagList.dflt
+          ],
+          weight: {
+            default: 0,
+            custom: 0
+          },
+          races: []
         }
       ]
+    }
+  ];
+
+  // default settlements
+  service_.defaultSettlementTypes = [
+    {
+      isAllowed: true,
+      name: 'Thorp',
+      type: 'settlement',
+      tags: [
+        service_.defaultTagList.dflt,
+        service_.defaultTagList.dmg
+      ],
+      weight: {
+        default: 10,
+        custom: 10
+      },
+      range: {
+        min: 20,
+        max: 80
+      },
+      gpLimit: 40,
+      powerCenterQuantity: 1,
+      powerCenterModifier: -5,
+      classes: {
+        classLevelModifier: -3,
+        highLevelNPCQuantity: 1,
+        chanceToAddLevelsToClass: 5,
+        classesToCheckForAddedLevels: ['Druid', 'Ranger'],
+        levelsToAdd: 10
+      },
+      id: 'sett-001'
+    },
+    {
+      isAllowed: true,
+      name: 'Hamlet',
+      type: 'settlement',
+      tags: [
+        service_.defaultTagList.dflt,
+        service_.defaultTagList.dmg
+      ],
+      weight: {
+        default: 20,
+        custom: 20
+      },
+      range: {
+        min: 81,
+        max: 400
+      },
+      gpLimit: 100,
+      powerCenterQuantity: 1,
+      powerCenterModifier: 0,
+      classes: {
+        classLevelModifier: -2,
+        highLevelNPCQuantity: 1,
+        chanceToAddLevelsToClass: 5,
+        classesToCheckForAddedLevels: ['Druid', 'Ranger'],
+        levelsToAdd: 10
+      },
+      id: 'sett-002'
+    },
+    {
+      isAllowed: true,
+      name: 'Village',
+      type: 'settlement',
+      tags: [
+        service_.defaultTagList.dflt,
+        service_.defaultTagList.dmg
+      ],
+      weight: {
+        default: 20,
+        custom: 20
+      },
+      range: {
+        min: 401,
+        max: 900
+      },
+      gpLimit: 200,
+      powerCenterQuantity: 1,
+      powerCenterModifier: 5,
+      classes: {
+        classLevelModifier: -1,
+        highLevelNPCQuantity: 1,
+        chanceToAddLevelsToClass: 0,
+        classesToCheckForAddedLevels: [],
+        levelsToAdd: 0
+      },
+      id: 'sett-003'
+    },
+    {
+      isAllowed: true,
+      name: 'Small Town',
+      type: 'settlement',
+      tags: [
+        service_.defaultTagList.dflt,
+        service_.defaultTagList.dmg
+      ],
+      weight: {
+        default: 20,
+        custom: 20
+      },
+      range: {
+        min: 901,
+        max: 2000
+      },
+      gpLimit: 800,
+      powerCenterQuantity: 1,
+      powerCenterModifier: 10,
+      classes: {
+        classLevelModifier: 0,
+        highLevelNPCQuantity: 1,
+        chanceToAddLevelsToClass: 0,
+        classesToCheckForAddedLevels: [],
+        levelsToAdd: 0
+      },
+      id: 'sett-004'
+    },
+    {
+      isAllowed: true,
+      name: 'Large Town',
+      type: 'settlement',
+      tags: [
+        service_.defaultTagList.dflt,
+        service_.defaultTagList.dmg
+      ],
+      weight: {
+        default: 15,
+        custom: 15
+      },
+      range: {
+        min: 2001,
+        max: 5000
+      },
+      gpLimit: 3000,
+      powerCenterQuantity: 1,
+      powerCenterModifier: 15,
+      classes: {
+        classLevelModifier: 3,
+        highLevelNPCQuantity: 1,
+        chanceToAddLevelsToClass: 0,
+        classesToCheckForAddedLevels: [],
+        levelsToAdd: 0
+      },
+      id: 'sett-005'
+    },
+    {
+      isAllowed: true,
+      name: 'Small City',
+      type: 'settlement',
+      tags: [
+        service_.defaultTagList.dflt,
+        service_.defaultTagList.dmg
+      ],
+      weight: {
+        default: 10,
+        custom: 10
+      },
+      range: {
+        min: 5001,
+        max: 12000
+      },
+      gpLimit: 15000,
+      powerCenterQuantity: 2,
+      powerCenterModifier: 20,
+      classes: {
+        classLevelModifier: 6,
+        highLevelNPCQuantity: 2,
+        chanceToAddLevelsToClass: 0,
+        classesToCheckForAddedLevels: [],
+        levelsToAdd: 0
+      },
+      id: 'sett-006'
+    },
+    {
+      isAllowed: true,
+      name: 'Large City',
+      type: 'settlement',
+      tags: [
+        service_.defaultTagList.dflt,
+        service_.defaultTagList.dmg
+      ],
+      weight: {
+        default: 4,
+        custom: 4
+      },
+      range: {
+        min: 12001,
+        max: 25000
+      },
+      gpLimit: 40000,
+      powerCenterQuantity: 3,
+      powerCenterModifier: 25,
+      classes: {
+        classLevelModifier: 9,
+        highLevelNPCQuantity: 3,
+        chanceToAddLevelsToClass: 0,
+        classesToCheckForAddedLevels: [],
+        levelsToAdd: 0
+      },
+      id: 'sett-007'
+    },
+    {
+      isAllowed: true,
+      name: 'Metropolis',
+      type: 'settlement',
+      tags: [
+        service_.defaultTagList.dflt,
+        service_.defaultTagList.dmg
+      ],
+      weight: {
+        default: 1,
+        custom: 1
+      },
+      range: {
+        min: 25001,
+        max: 60000
+      },
+      gpLimit: 100000,
+      powerCenterQuantity: 4,
+      powerCenterModifier: 30,
+      classes: {
+        classLevelModifier: 12,
+        highLevelNPCQuantity: 4,
+        chanceToAddLevelsToClass: 0,
+        classesToCheckForAddedLevels: [],
+        levelsToAdd: 0
+      },
+      id: 'sett-008'
     }
   ];
 

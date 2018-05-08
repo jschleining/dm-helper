@@ -75,7 +75,7 @@
       <!-- Race Name Edit -->
       <div class="layout-margin-top" layout="column" layout-align="start stretch" ng-if="vm.editObject.id">
         <dg-object-edit object="vm.editObject" group="null" parent="null"
-            c on-save="vm.updateCustomObject(vm.editObject, null, true)"
+            on-save="vm.updateCustomObject(vm.editObject, null, true)" edit-types="['input', 'delete', 'save']"
             on-delete="vm.deleteCustomObject(vm.editObject, null, true)"></dg-object-edit>
       </div>
     </section>
@@ -93,8 +93,8 @@
             can be deleted, but if you wish to delete all of the default subraces, a new subrace must be created first.
           </div>
         </div>
-        <dg-object-edit class="layout-margin-vertical" object="vm.newObject" group="null" parent="null"
-            default-text="Enter Race Name..." toggle-message="Add to Allowed Races?" edit-types="['single-allowed', 'hint']"
+        <dg-object-edit class="layout-margin-vertical" object="vm.newObject" group="null" parent="null" hide-frame="true"
+            default-text="Enter Race Name..." toggle-message="Add to Allowed Races?" edit-types="['single-allowed', 'hint', 'input']"
             hint-message="* If this is not selected, this race will have to be added in the Allowed Races dropdown.">
         </dg-object-edit>
         <md-button class="md-raised md-primary no-margin-horizontal no-margin-bottom" ng-click="vm.addCustomRace()"

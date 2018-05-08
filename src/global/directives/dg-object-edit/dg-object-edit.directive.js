@@ -22,10 +22,11 @@ app.directive('dgObjectEdit', ['Utilities', function(Utilities) {
       parent: '=', // the parent object
       group: '=', // array of objects this object exists in
       object: '=', // the specific object to be edited
-      editTypes: '@', // type of edits allowed on this object
+      editTypes: '=', // type of edits allowed on this object
       defaultText: '@', // placeholder for text fields
       toggleMessage: '@', // text to display for a toggle
       hintMessage: '@', // text to display in a hint
+      hideFrame: '=', // hide the frame that appears around the box
       onChangeAllowed: '&',
       onDelete: '&',
       onSave: '&',
@@ -35,7 +36,6 @@ app.directive('dgObjectEdit', ['Utilities', function(Utilities) {
     },
     link: function(scope, elem, attr) {
       scope.defaultText = attr.defaultText || 'Enter Text Here...';
-      // scope.toggleMessage = attr.toggleMessage || 'Allowed: ' + scope.object.isAllowed;
       scope.hintMessage = attr.hintMessage || 'Hint Missing!';
       scope.checkForEditTypes = function(allowedTypes) {
         var editTypesExist = false;

@@ -55,6 +55,44 @@
         </md-button>
       </div>
 
+      <!-- Select if Social Classes are used -->
+      <div layout="row" layout-align="space-between center"
+           md-colors="{'border-color': 'background-300'}">
+        <md-switch ng-model="vm.appConfigSettings.global.useSocialClass" aria-label="Social Class Global Config"
+                   ng-change="vm.clearEdits()" class="md-primary no-margin">
+          Social Class Enabled: <span class="bold" md-colors="{'color': 'primary-500'}">
+            {{vm.appConfigSettings.global.useSocialClass}}
+          </span>
+        </md-switch>
+        <md-button class="md-icon-button icon-button-override no-margin-horizontal no-padding inherit-width"
+                   aria-label="Help Text" md-no-ink >
+          <md-tooltip class="tooltip-override layout-padding-vertical" md-direction="left">
+            * Choose whether social classes are active in the generator.<br>
+            * Deactivating this will hide all related options from settings menus and results.
+          </md-tooltip>
+          <i class="material-icons">help_outline</i>
+        </md-button>
+      </div>
+
+      <!-- Select if Professions are used -->
+      <div layout="row" layout-align="space-between center"
+           md-colors="{'border-color': 'background-300'}">
+        <md-switch ng-model="vm.appConfigSettings.global.useProfessions" aria-label="Profession Global Config"
+                   ng-change="vm.clearEdits()" class="md-primary no-margin">
+          Professions Enabled: <span class="bold" md-colors="{'color': 'primary-500'}">
+            {{vm.appConfigSettings.global.useProfessions}}
+          </span>
+        </md-switch>
+        <md-button class="md-icon-button icon-button-override no-margin-horizontal no-padding inherit-width"
+                   aria-label="Help Text" md-no-ink >
+          <md-tooltip class="tooltip-override layout-padding-vertical" md-direction="left">
+            * Choose whether professions are active in the generator.<br>
+            * Deactivating this will hide all related options from settings menus and results.
+          </md-tooltip>
+          <i class="material-icons">help_outline</i>
+        </md-button>
+      </div>
+
     </section>
   </div>
 </md-content>

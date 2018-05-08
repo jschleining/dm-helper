@@ -1,0 +1,53 @@
+<md-content>
+  <div layout="column">
+
+    <!-- Header -->
+    <section class="layout-padding-well border-bottom-1" layout="column" layout-align="start stretch"
+             md-colors="{'border-color': 'background-300'}">
+      <h3>Settlement Settings</h3>
+      <div class="hint layout-margin-top">
+        <ul class="no-margin no-padding">
+          <li layout="row" layout-align="start start">
+            <i class="material-icons">chevron_right</i>
+            <span class="hint">Add, edit, or remove a settlement type in the generator.</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Settlement Settings -->
+    <section class="layout-padding-well border-bottom-1" layout="column" layout-align="start stretch"
+             ng-if="vm.editArray.length > 0" md-colors="{'border-color': 'background-300'}">
+
+      <div ng-if="vm.editArray.length > 0">
+        <ul class="no-margin no-padding">
+          <li class="no-padding layout-margin-bottom" ng-repeat="settlement in vm.editArray track by $index"
+              layout="column" layout-align="start stretch">
+            <dg-object-edit object="settlement" group="vm.editArray" parent="null"
+                            edit-types="['input', 'group-allowed', 'weight', 'weight-custom', 'range', 'min-1', 'increment',
+                                'specific-fields', 'population-range', 'gp-limit', 'power-center-quantity', 'power-center-modifier']"
+                            on-save="" on-delete="" on-add-weight="" on-remove-weight="" on-change-allowed=""
+                            fields="{{vm.settlementCustomFields}}"></dg-object-edit>
+          </li>
+          <!--<li class="no-padding">-->
+            <!--<div layout="column" layout-align="start stretch">-->
+              <!--<md-button class="md-raised md-primary no-margin" ng-click="vm.updateCustomObject(vm.editObject, null, true)"-->
+                         <!--ng-disabled="vm.checkForButtonDisabled(vm.editObject.subraces, 'name', '', {'matchType': 'exact'})">-->
+                <!--save all changes-->
+              <!--</md-button>-->
+            <!--</div>-->
+          <!--</li>-->
+        </ul>
+      </div>
+    </section>
+
+    <section class="layout-padding-well" layout="column" layout-align="start stretch">
+      <pre class="no-margin border-all-1" md-colors="{'border-color': 'amber-300', 'background-color': 'amber-50'}">{{vm.settlementCustomFields | json}}</pre>
+    </section>
+
+    <section class="layout-padding-well" layout="column" layout-align="start stretch">
+      <pre class="no-margin border-all-1" md-colors="{'border-color': 'amber-300', 'background-color': 'amber-50'}">{{vm.editArray[0] | json}}</pre>
+    </section>
+
+  </div>
+</md-content>

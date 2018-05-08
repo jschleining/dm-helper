@@ -8,31 +8,45 @@
     <div layout="column" layout-align="start stretch">
       <md-whiteframe class="md-whiteframe-1dp layout-padding-well">
 
-        <div class="layout-padding-well border-bottom-1" md-colors="{'border-color': 'background-300'}">
-          <div class="layout-margin-vertical" ng-repeat="authority in vm.authoritySelection">
-            {{authority.name}} Weight (D/C): {{authority.weight.default}}/{{authority.weight.custom}}
+        <div class="layout-padding-well border-bottom-1" md-colors="{'border-color': 'background-300'}" layout="row">
+          <div class="layout-padding-right" layout="column" layout-align="start stretch">
+            <div>
+              Base Array
+            </div>
+            <div class="layout-margin-vertical" ng-repeat="authority in vm.authoritySelection">
+              {{authority.name}} Weight (D/C): {{authority.weight.default}}/{{authority.weight.custom}}
+            </div>
           </div>
+
+          <!--<div class="layout-padding-left" layout="column" layout-align="start stretch">-->
+            <!--<div>-->
+              <!--Edit Array-->
+            <!--</div>-->
+            <!--<div class="layout-margin-vertical" ng-repeat="item in vm.editArray">-->
+              <!--{{item.name}} Weight (D/C): {{item.weight.default}}/{{item.weight.custom}}-->
+            <!--</div>-->
+          <!--</div>-->
         </div>
 
         <div class="layout-padding-well border-bottom-1" md-colors="{'border-color': 'background-300'}">
           <div class="layout-margin-vertical" ng-repeat="race in vm.selectedRaces | orderBy: 'name'">
             ({{race.id}}) Race: {{race.name}}
 
-            <div layout="row" layout-wrap>
-              <span class="layout-padding-horizontal layout-margin-4 hint local-tag" ng-repeat="tag in race.tags track by $index">
-                {{tag.name}}
-              </span>
-            </div>
+            <!--<div layout="row" layout-wrap>-->
+              <!--<span class="layout-padding-horizontal layout-margin-4 hint local-tag" ng-repeat="tag in race.tags track by $index">-->
+                <!--{{tag.name}}-->
+              <!--</span>-->
+            <!--</div>-->
             <ul ng-if="race.subraces.length > 0 && vm.appConfigSettings.global.useSubraces">
               <li ng-repeat="subrace in race.subraces" layout="column" layout-align="start stretch">
                 <div>
-                  ({{subrace.owner}} / {{subrace.id}}) {{subrace.name}}: Allowed: {{subrace.isAllowed}}, Weight: {{subrace.weight.custom}}
+                  ({{subrace.owner}} / {{subrace.id}}) == {{subrace.name}} (Allowed: {{subrace.isAllowed}}) / Weight: (D/C): {{subrace.weight.default}}/{{subrace.weight.custom}}
                 </div>
-                <div layout="row" layout-wrap>
-                  <span class="layout-padding-horizontal layout-margin-4 hint local-tag" ng-repeat="subraceTag in subrace.tags track by $index">
-                    {{subraceTag.name}}
-                  </span>
-                </div>
+                <!--<div layout="row" layout-wrap>-->
+                  <!--<span class="layout-padding-horizontal layout-margin-4 hint local-tag" ng-repeat="subraceTag in subrace.tags track by $index">-->
+                    <!--{{subraceTag.name}}-->
+                  <!--</span>-->
+                <!--</div>-->
               </li>
             </ul>
           </div>
@@ -52,18 +66,40 @@
         <md-button class="md-raised md-primary no-margin" ng-click="vm.openSettingsSidebar('globalSettings')">global settings</md-button>
       </div>
       <div class="layout-padding-4" flex="50" layout="column" layout-align="start stretch">
-        <md-button class="md-raised md-primary no-margin" ng-click="vm.openSettingsSidebar('raceSettings')">races</md-button>
+        <md-button class="md-raised md-primary no-margin" ng-click="vm.openSettingsSidebar('settlementSettings', {
+        action: 'populateEditArray', object: vm.settlementSelection})">settlement</md-button>
       </div>
-      <div class="layout-padding-4" flex="50" layout="column" layout-align="start stretch" ng-if="vm.appConfigSettings.global.useSubraces">
-        <md-button class="md-raised md-primary no-margin" ng-click="vm.openSettingsSidebar('subraceSettings')">subraces</md-button>
+      <div class="layout-padding-4" flex="50" layout="column" layout-align="start stretch">
+        <md-button class="md-raised md-primary no-margin" ng-click="vm.openSettingsSidebar('powerCenterSettings', {
+        action: 'populateEditArray', object: vm.powerCenterSelection})">power ctr</md-button>
       </div>
-      <!-- Age Categories Needs To Be Finished -->
-      <!--<div class="layout-padding-4" flex="50" layout="column" layout-align="start stretch" ng-if="vm.appConfigSettings.global.useAgeCategories">-->
-        <!--<md-button class="md-raised md-primary no-margin" ng-click="vm.openSettingsSidebar('ageSettings')">age</md-button>-->
-      <!--</div>-->
       <div class="layout-padding-4" flex="50" layout="column" layout-align="start stretch">
         <md-button class="md-raised md-primary no-margin" ng-click="vm.openSettingsSidebar('authoritySettings', {
         action: 'populateEditArray', object: vm.authoritySelection})">authorities</md-button>
+      </div>
+      <div class="layout-padding-4" flex="50" layout="column" layout-align="start stretch">
+        <md-button class="md-raised md-primary no-margin" ng-click="vm.openSettingsSidebar('raceSettings')">races</md-button>
+      </div>
+      <div class="layout-padding-4" flex="50" layout="column" layout-align="start stretch">
+        <md-button class="md-raised md-primary no-margin" ng-click="vm.openSettingsSidebar('racialMixSettings', {
+        action: 'populateEditArray', object: vm.racialMixSelection})">racial mix</md-button>
+      </div>
+    </div>
+
+    <div class="layout-padding-4 border-top-1" layout="row" layout-wrap md-colors="{'border-color': 'background-300'}">
+      <div class="layout-padding-4" flex="50" layout="column" layout-align="start stretch" ng-if="vm.appConfigSettings.global.useSubraces">
+        <md-button class="md-raised md-accent no-margin" ng-click="vm.openSettingsSidebar('subraceSettings')">subraces</md-button>
+      </div>
+      <div class="layout-padding-4" flex="50" layout="column" layout-align="start stretch" ng-if="vm.appConfigSettings.global.useAgeCategories">
+        <md-button class="md-raised md-accent no-margin" ng-click="vm.openSettingsSidebar('ageSettings')">age</md-button>
+      </div>
+      <div class="layout-padding-4" flex="50" layout="column" layout-align="start stretch" ng-if="vm.appConfigSettings.global.useSocialClass">
+        <md-button class="md-raised md-accent no-margin" ng-click="vm.openSettingsSidebar('socialClassSettings', {
+        action: 'populateEditArray', object: vm.socialClassSelection})">social cls</md-button>
+      </div>
+      <div class="layout-padding-4" flex="50" layout="column" layout-align="start stretch" ng-if="vm.appConfigSettings.global.useProfessions">
+        <md-button class="md-raised md-accent no-margin" ng-click="vm.openSettingsSidebar('professionSettings', {
+        action: 'populateEditArray', object: vm.professionSelection})">professions</md-button>
       </div>
     </div>
 

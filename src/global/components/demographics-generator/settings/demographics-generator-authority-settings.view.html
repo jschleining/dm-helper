@@ -1,6 +1,13 @@
 <md-content>
   <div layout="column">
 
+    <!-- TODO: Update Authority Figure to allow multiple, as well as specific roles. Different types tend to have -->
+    <!-- TODO: different levels of authority. There may be a captain of the guard in charge of city defenses in a   -->
+    <!-- TODO: larger city as well as one or more district chiefs in a large metropolis, or only one local  -->
+    <!-- TODO: constable/sheriff/guard captain in a tiny town. -->
+
+    <!-- TODO: Calculate Guards/Militia Here -->
+
     <!-- Header -->
     <section class="layout-padding-well border-bottom-1" layout="column" layout-align="start stretch"
              md-colors="{'border-color': 'background-300'}">
@@ -10,6 +17,15 @@
           <li layout="row" layout-align="start start">
             <i class="material-icons">chevron_right</i>
             <span class="hint">Add, edit, or remove a potential authority figure from the settlement.</span>
+          </li>
+          <li layout="row" layout-align="start start">
+            <i class="material-icons">chevron_right</i>
+            <span class="hint">This might be the constable, captain of the town guard, sheriff, or any other
+              authority figure in charge of security/upholding laws.</span>
+          </li>
+          <li layout="row" layout-align="start start">
+            <i class="material-icons">chevron_right</i>
+            <span class="hint">TODO: Add Those ^ ;).</span>
           </li>
         </ul>
       </div>
@@ -31,16 +47,14 @@
       </div>
 
       <!-- Edit Authority Figures -->
-      <ul class="layout-padding-left layout-margin-left">
+      <ul class="no-margin no-padding">
         <li class="no-padding layout-margin-bottom" ng-repeat="authority in vm.editArray track by $index"
             layout="column" layout-align="start stretch">
-          <!-- TODO: Need to update to account for 'edit object' really being an array -->
           <dg-object-edit object="authority" group="vm.authoritySelection" parent="null"
-              edit-types="['group-allowed', 'delete', 'weight', 'weight-custom']"
+              edit-types="['input', 'weight-row-delete', 'weight', 'weight-custom']"
               on-delete="vm.deleteCustomObject(authority, null, false)"
               on-add-weight="vm.updateObjectWeight(vm.editArray, authority, 1, 'custom', false)"
-              on-remove-weight="vm.updateObjectWeight(vm.editArray, authority, -1, 'custom', false)"
-              on-change-allowed="vm.resetObjectWeight(vm.editArray, authority)"></dg-object-edit>
+              on-remove-weight="vm.updateObjectWeight(vm.editArray, authority, -1, 'custom', false)"></dg-object-edit>
         </li>
         <li class="no-padding">
           <div layout="column" layout-align="start stretch">
@@ -53,25 +67,19 @@
       </ul>
     </section>
 
-    <!-- Add Race -->
+    <!-- Add Authority -->
     <section class="layout-padding-well">
-      <!-- Add Race -->
       <div layout="column" layout-align="start stretch">
-        <h4>Add New Race:</h4>
+        <h4>Add New Authority:</h4>
         <div class="layout-margin-vertical layout-padding-vertical hint border-bottom-1"
              md-colors="{'border-color': 'background-300'}">
-          Here you can add a new custom race and set whether the race is allowed in the current settlement.
-          <div class="hint layout-margin-top" ng-if="vm.appConfigSettings.global.useSubraces">
-            This system requires there to be at least one subrace, so it populates some defaults. Any of the subraces
-            can be deleted, but if you wish to delete all of the default subraces, a new subrace must be created first.
-          </div>
+          Here you can add a new custom authority and set whether the authority is allowed in the current settlement.
         </div>
-        <dg-object-edit class="layout-margin-vertical" object="vm.newObject" group="null" parent="null"
-                        default-text="Enter Race Name..." toggle-message="Add to Allowed Races?" edit-types="['single-allowed', 'hint']"
-                        hint-message="* If this is not selected, this race will have to be added in the Allowed Races dropdown.">
+        <dg-object-edit class="layout-margin-vertical" object="vm.newObject" group="vm.editArray" parent="null"
+                        default-text="Enter Authority Name..." edit-types="['input']" hide-frame="true">
         </dg-object-edit>
-        <md-button class="md-raised md-primary no-margin-horizontal no-margin-bottom" ng-click="vm.addCustomRace()"
-                   ng-disabled="vm.newObject.name === ''">submit new race</md-button>
+        <md-button class="md-raised md-primary no-margin-horizontal no-margin-bottom" ng-click="vm.addCustomAuthority()"
+                   ng-disabled="vm.newObject.name === ''">submit new authority</md-button>
       </div>
     </section>
 

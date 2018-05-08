@@ -4,6 +4,8 @@ app.controller('DemographicsGeneratorController', ['$scope', '$mdComponentRegist
 function ($scope, $mdComponentRegistry, $mdSidenav, Utilities, Demographics) {
   var vm_ = this;
 
+  //---------------------------------------------------------------------- =VARS
+
   //#region vars
   //#region Passed in Settings
   vm_.localSettings = vm_.config;
@@ -16,10 +18,15 @@ function ($scope, $mdComponentRegistry, $mdSidenav, Utilities, Demographics) {
   vm_.settingsTemplateBase = 'global/components/demographics-generator/settings/';
   vm_.settingsTemplates = {
     globalSettings: vm_.settingsTemplateBase + 'demographics-generator-global-settings.view.html',
-    ageSettings: vm_.settingsTemplateBase + 'demographics-generator-age-settings.view.html',
+    settlementSettings: vm_.settingsTemplateBase + 'demographics-generator-settlement-settings.view.html',
+    powerCenterSettings: vm_.settingsTemplateBase + 'demographics-generator-power-center-settings.view.html',
     authoritySettings: vm_.settingsTemplateBase + 'demographics-generator-authority-settings.view.html',
     raceSettings: vm_.settingsTemplateBase + 'demographics-generator-race-settings.view.html',
-    subraceSettings: vm_.settingsTemplateBase + 'demographics-generator-subrace-settings.view.html'
+    subraceSettings: vm_.settingsTemplateBase + 'demographics-generator-subrace-settings.view.html',
+    racialMixSettings: vm_.settingsTemplateBase + 'demographics-generator-racial-mixture-settings.view.html',
+    ageSettings: vm_.settingsTemplateBase + 'demographics-generator-age-settings.view.html',
+    socialClassSettings: vm_.settingsTemplateBase + 'demographics-generator-social-class-settings.view.html',
+    professionSettings: vm_.settingsTemplateBase + 'demographics-generator-profession-settings.view.html'
   };
   vm_.settingsTemplate = '';
   //#endregion
@@ -35,16 +42,46 @@ function ($scope, $mdComponentRegistry, $mdSidenav, Utilities, Demographics) {
   vm_.appConfigSettings = {
     global: {
       useSubraces: false,
-      useAgeCategories: false
-    },
-    subraceSettings: {
-      editMode: false
+      useAgeCategories: false,
+      useSocialClass: false,
+      useProfessions: false
     },
     ageSettings: {
       editMode: false,
       editType: 'individual'
     }
   };
+  vm_.tagSelection = angular.copy(Demographics.defaultTagList);
+  //#endregion
+
+  //#region Settlement Vars
+  vm_.settlementSelection = angular.copy(Demographics.defaultSettlementTypes);
+  //TODO: This doesnt work. Passing an object array into a directive was failing so I did it the crappy way. FIX!!!
+  vm_.settlementCustomFields = [
+    {
+      name: 'GP Limit',
+      property: 'gpLimit',
+      checks: ['min-1']
+    },
+    {
+      name: 'Power Centers',
+      property: 'powerCenterQuantity',
+      checks: ['min-1']
+    },
+    {
+      name: 'P.C. Modifier',
+      property: 'powerCenterModifier',
+      checks: []
+    }
+  ];
+  //#endregion
+
+  //#region Power Center Vars
+  vm_.powerCenterSelection = [];
+  //#endregion
+
+  //#region Authority Vars
+  vm_.authoritySelection = angular.copy(Demographics.defaultAuthorities);
   //#endregion
 
   //#region Race Vars
@@ -52,20 +89,28 @@ function ($scope, $mdComponentRegistry, $mdSidenav, Utilities, Demographics) {
   vm_.selectedRaces = [];
   //#endregion
 
-  //#region Age Vars
+  //#region Racial Mixture Vars
+  vm_.racialMixSelection = angular.copy(Demographics.defaultRacialMixtures);
+  //#endregion
+
+  //#region Age Vars INCOMPLETE
   vm_.ageSelection = angular.copy(Demographics.defaultAgeCategories);
   vm_.ageSettingsMode = 'Individual';
   //#endregion
 
-  //#region Authority Vars
-  vm_.authoritySelection = angular.copy(Demographics.defaultAuthorities);
+  //#region Social Class Vars
+  vm_.socialClassSelection = [];
   //#endregion
 
-  vm_.tagSelection = angular.copy(Demographics.defaultTagList);
-
+  //#region Profession Vars
+  vm_.professionSelection = [];
   //#endregion
 
   //#endregion
+
+  //#endregion
+
+  //---------------------------------------------------------------------- =DEFINITIONS
 
   //#region function definitions
 
@@ -88,10 +133,15 @@ function ($scope, $mdComponentRegistry, $mdSidenav, Utilities, Demographics) {
   vm_.deleteCustomObjectGlobal = deleteCustomObjectGlobal_;
   vm_.resetNewObject = resetNewObject_;
   vm_.updateAllowedObjects = updateAllowedObjects_;
+  vm_.updateCustomArray = updateCustomArray_;
   vm_.updateCustomObject = updateCustomObject_;
   vm_.updateCustomObjectGlobal = updateCustomObjectGlobal_;
   vm_.updateObjectWeight = updateObjectWeight_;
   vm_.updateRemovedWeightInArrayList = updateRemovedWeightInArrayList_;
+  //#endregion
+
+  //#region Authority Functions
+  vm_.addCustomAuthority = addCustomAuthority_;
   //#endregion
 
   //#region Race Functions
@@ -112,6 +162,8 @@ function ($scope, $mdComponentRegistry, $mdSidenav, Utilities, Demographics) {
 
   //#endregion
 
+  //---------------------------------------------------------------------- =INIT
+
   /**
    * Initial activation of Controller.
    */
@@ -120,6 +172,10 @@ function ($scope, $mdComponentRegistry, $mdSidenav, Utilities, Demographics) {
     vm_.updateAllowedRaces();
     vm_.updateAges();
   };
+
+  //---------------------------------------------------------------------- =FUNCTIONS
+
+  //#region Functions
 
   //#region General Functions
   /**
@@ -237,7 +293,7 @@ function ($scope, $mdComponentRegistry, $mdSidenav, Utilities, Demographics) {
     for (var array = 0; array < arrayList.length; array++) {
       var objectIndex = Utilities.getObjectIndex(arrayList[array], 'id', customObject.id);
       if (objectIndex === -1) {
-        arrayList[array].push(customObject);
+        arrayList[array].push(angular.copy(customObject));
       }
     }
   }
@@ -292,8 +348,8 @@ function ($scope, $mdComponentRegistry, $mdSidenav, Utilities, Demographics) {
   /**
    * Populate a list of arrays to edit, based on type of edits being made.
    *
-   * @param {object} object The object to be deleted.
-   * @param {object} parentObject The parent of the object to be deleted.
+   * @param {object} object The object to check against.
+   * @param {object} parentObject The parent of the object to check against.
    */
   function populateArrayList_(object, parentObject) {
     var arrayList = [];
@@ -368,14 +424,21 @@ function ($scope, $mdComponentRegistry, $mdSidenav, Utilities, Demographics) {
     }
   }
 
-  // not saving correctly
-  vm_.updateCustomArray = updateCustomArray_;
+  /**
+   * Update an array of objects.
+   *
+   * @param {string} type A key to use for populateArray.
+   * @param {Array} array The modified array.
+   * @param {Boolean} clearEdits Whether to clear the temp objects or not.
+   */
   function updateCustomArray_(type, array, clearEdits) {
     var object = {type: type};
     var arrayList = vm_.populateArrayList(object, null);
     for (var arrayCounter = 0; arrayCounter < arrayList.length; arrayCounter++) {
-      arrayList[arrayCounter] = angular.copy(array);
-      console.log('Array: ' + arrayCounter, angular.copy(arrayList[arrayCounter]));
+      for (var obj = 0; obj < arrayList[arrayCounter].length; obj++) {
+        var objIndex = Utilities.getObjectIndex(array, 'id', arrayList[arrayCounter][obj].id);
+        arrayList[arrayCounter][obj] = angular.copy(array[objIndex]);
+      }
     }
     if (clearEdits) {
       vm_.clearEdits();
@@ -465,6 +528,82 @@ function ($scope, $mdComponentRegistry, $mdSidenav, Utilities, Demographics) {
         vm_.resetObjectWeight(arrayList[array],arrayList[array][objectIndex]);
       }
     }
+  }
+  //#endregion
+
+  //#region Settlement Functions
+  vm_.addCustomSettlement = addCustomSettlement_;
+  /**
+   * Add a new settlement to the list of settlements.
+   */
+  function addCustomSettlement_() {
+    var name_ = angular.copy(vm_.newObject.name);
+    vm_.newObject.type = 'race';
+    var params = {
+      tags: [
+        vm_.tagSelection.cust
+      ],
+      weight: {
+        default: 0,
+        custom: 0
+      },
+      ageCategories: angular.copy(vm_.ageSelection),
+      percentageOfChildren: 10,
+      subraces: []
+    };
+    var arrayList = [vm_.raceSelection];
+    if (vm_.newObject.isAllowed) {
+      arrayList.push(vm_.selectedRaces);
+    }
+    vm_.addNewObject(vm_.newObject, params, arrayList);
+    vm_.resetNewObject();
+
+    for (var array = 0; array < arrayList.length; array++) {
+      var raceIndex = Utilities.getObjectIndex(arrayList[array], 'name', name_);
+      // Add Default Subrace
+      if (Utilities.getObjectIndex(arrayList[array][raceIndex].subraces, 'name', 'Default') < 0) {
+        vm_.addCustomSubRace(arrayList[array][raceIndex], {
+          defaultName: 'Default',
+          tags: [],
+          isAllowed: true
+        });
+      }
+
+      // Add Revenant Subrace
+      if (Utilities.getObjectIndex(arrayList[array][raceIndex].tags, 'id', vm_.tagSelection.uagh.id) < 0) {
+        arrayList[array][raceIndex].tags.push(vm_.tagSelection.uagh);
+      }
+      if (Utilities.getObjectIndex(arrayList[array][raceIndex].subraces, 'name', 'Revenant') < 0) {
+        vm_.addCustomSubRace(arrayList[array][raceIndex], {
+          defaultName: 'Revenant',
+          tags: [
+            vm_.tagSelection.uagh
+          ]
+        });
+      }
+    }
+  }
+  //#endregion
+
+  //#region Authority Figure Functions
+  /**
+   * Add a new authority figure to the list of authorities.
+   */
+  function addCustomAuthority_() {
+    vm_.newObject.type = 'authority';
+    vm_.newObject.isAllowed = true;
+    var params = {
+      tags: [
+        vm_.tagSelection.cust
+      ],
+      weight: {
+        default: 0,
+        custom: 0
+      }
+    };
+    var arrayList = [vm_.authoritySelection, vm_.editArray];
+    vm_.addNewObject(vm_.newObject, params, arrayList);
+    vm_.resetNewObject();
   }
   //#endregion
 
@@ -619,6 +758,10 @@ function ($scope, $mdComponentRegistry, $mdSidenav, Utilities, Demographics) {
   }
   //#endregion
 
+  //#region Racial Mixture Functions
+
+  //#endregion
+
   //#region Age Functions
   function updateGlobalDefaultAges_(ageArray) {
     var startingArray = [
@@ -653,7 +796,6 @@ function ($scope, $mdComponentRegistry, $mdSidenav, Utilities, Demographics) {
       }
     }
   }
-
 
   function updateAgeConfigs_(settingsMode) {
     if (settingsMode === 'Global') {
@@ -698,8 +840,11 @@ function ($scope, $mdComponentRegistry, $mdSidenav, Utilities, Demographics) {
     }
   }
 
+  //#endregion
 
   //#endregion
+
+  //---------------------------------------------------------------------- =WATCHERS
 
   //#region Watchers
   // Watching the sidebar. Toggle doesn't send close events, so this was implemented.
